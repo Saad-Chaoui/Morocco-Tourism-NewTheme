@@ -6,7 +6,14 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getRegions, getCitiesByRegion, getMonumentsByCity, getTouristSitesByRegion } from '../services/api';
+import { 
+  getRegions, 
+  getCitiesByRegion, 
+  getMonumentsByRegion, 
+  getTouristSitesByRegion, 
+  getMonumentsByCity
+} from '../services/api';
+import RegionMap from './RegionMap';
 
 function Explore() {
   const theme = useTheme();
@@ -190,6 +197,25 @@ function Explore() {
     );
   };
 
+  useEffect(() => {
+    const fetchLocations = async () => {
+      if (selectedRegion) {
+        try {
+          const [monumentsData, sitesData] = await Promise.all([
+            getMonumentsByRegion(selectedRegion.id),
+            getTouristSitesByRegion(selectedRegion.id)
+          ]);
+          setMonuments(monumentsData);
+          setTouristSites(sitesData);
+        } catch (error) {
+          console.error('Error fetching locations:', error);
+        }
+      }
+    };
+
+    fetchLocations();
+  }, [selectedRegion]);
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
@@ -294,6 +320,14 @@ function Explore() {
           </Select>
         </FormControl>
       </Box>
+
+      {selectedRegion && (
+        <RegionMap
+          monuments={monuments}
+          touristSites={touristSites}
+          selectedCity={selectedCity}
+        />
+      )}
 
       {showResults && (
         <Box sx={{ mt: 4 }}>
