@@ -1,0 +1,41 @@
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+  
+  .image-gallery {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .image-counter {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .site-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .map-container {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
