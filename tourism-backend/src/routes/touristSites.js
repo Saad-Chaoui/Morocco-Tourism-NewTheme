@@ -67,8 +67,13 @@ router.get('/:id', async (req, res) => {
       const site = rows[0];
       try {
         site.images = JSON.parse(site.images || '[]');
+        // Parse nearest_cities as simple array of strings
+        site.nearest_cities = JSON.parse(site.nearest_cities || '[]').map(city => 
+          typeof city === 'string' ? city : city.name
+        );
       } catch (parseError) {
         site.images = [];
+        site.nearest_cities = [];
       }
       res.json(site);
     }

@@ -16,6 +16,8 @@ import {
   useTheme,
   useMediaQuery,
   Link as MuiLink,
+  Chip,
+  Skeleton
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
@@ -27,6 +29,7 @@ import {
   CheckCircle as OpenIcon,
   Cancel as ClosedIcon,
   Warning as MaintenanceIcon,
+  LocationCity as CityIcon
 } from '@mui/icons-material';
 import { getTouristSite } from '../services/api';
 import './MonumentDetails.css';
@@ -52,14 +55,12 @@ function TouristSiteDetails() {
   const parseNearestCities = (citiesString) => {
     if (!citiesString) return [];
     try {
-      // If it's already an array of objects, return it
-      if (Array.isArray(citiesString)) return citiesString;
-      
-      // If it's a string, split it and create objects
-      return citiesString.split(',').map(city => ({
-        id: city.trim(), // Using the city name as ID temporarily
-        name: city.trim()
-      }));
+      // If it's already an array, return it directly
+      if (Array.isArray(citiesString)) {
+        return citiesString;
+      }
+      // Parse the string and ensure we get an array of strings
+      return JSON.parse(citiesString);
     } catch (e) {
       console.error('Error parsing nearest cities:', e);
       return [];
@@ -74,8 +75,6 @@ function TouristSiteDetails() {
         
         // Parse nearest_cities before setting the state
         data.nearest_cities = parseNearestCities(data.nearest_cities);
-        console.log('Parsed site data:', data); // Debug log
-        
         setSite(data);
       } catch (error) {
         console.error('Error fetching tourist site:', error);
@@ -274,20 +273,21 @@ function TouristSiteDetails() {
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <LocationIcon color="primary" />
                     <Typography component="span">
-                      Near: {site.nearest_cities.map((city, index) => (
+                      Near: {site.nearest_cities.map((cityName, index) => (
                         <React.Fragment key={index}>
                           {index > 0 && ', '}
                           <MuiLink 
                             component={Link} 
-                            to={`/city/${city.id || `name/${encodeURIComponent(city.name)}`}`}
+                            to={`/city/search/${encodeURIComponent(cityName)}`}
                             sx={{ 
+                              color: 'primary.main',
                               textDecoration: 'none',
                               '&:hover': {
                                 textDecoration: 'underline'
                               }
                             }}
                           >
-                            {city.name}
+                            {cityName}
                           </MuiLink>
                         </React.Fragment>
                       ))}

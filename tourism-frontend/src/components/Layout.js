@@ -1,39 +1,30 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import Header from './Header';
+import MobileNavigation from './MobileNavigation';
 import Footer from './Footer';
+import ScrollToTop from './ScrollToTop';
 
 function Layout({ children }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-      }}
-    >
-      <Header>
-        <motion.img
-          src="/logo.png"
-          alt="Logo"
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 10 }}
-          style={{ width: 40, height: 40, marginRight: 10 }}
-        />
-      </Header>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+    <Box sx={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {!isMobile && <Header />}
+      <Box component="main" sx={{ 
+        flexGrow: 1,
+        pt: isMobile ? 0 : 8,
+        pb: isMobile ? 7 : 3
+      }}>
         {children}
       </Box>
-      <Footer />
+      <ScrollToTop />
+      {isMobile ? <MobileNavigation /> : <Footer />}
     </Box>
   );
 }

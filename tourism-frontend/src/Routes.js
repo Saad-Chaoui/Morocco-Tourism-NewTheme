@@ -23,7 +23,7 @@ function AppRoutes() {
       <Route path="/monuments" element={<MonumentList />} />
       <Route path="/tourist-sites" element={<TouristSiteList />} />
       <Route path="/tourist-site/:id" element={<TouristSiteDetails />} />
-      <Route path="/cities/search/:cityName" element={<CitySearch />} />
+      <Route path="/city/search/:cityName" element={<CitySearch />} />
       <Route path="/monument/:id" element={<MonumentDetails />} />
       <Route path="/region/:id" element={<RegionDetails />} />
       <Route path="/city/:id" element={<CityDetails />} />

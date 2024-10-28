@@ -46,7 +46,13 @@ router.get('/', async (req, res) => {
 // Get a single city
 router.get('/:id', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM cities WHERE id = ?', [req.params.id]);
+    const [rows] = await db.query(`
+      SELECT c.*, r.name as region_name 
+      FROM cities c
+      LEFT JOIN regions r ON c.region_id = r.id
+      WHERE c.id = ?
+    `, [req.params.id]);
+    
     if (rows.length === 0) {
       res.status(404).json({ message: 'City not found' });
     } else {
@@ -57,17 +63,23 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Add this new route
+// Update the search by name route
 router.get('/search/:name', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM cities WHERE name LIKE ?', [`%${req.params.name}%`]);
+    const cityName = decodeURIComponent(req.params.name);
+    const [rows] = await db.query(
+      'SELECT * FROM cities WHERE name = ?', 
+      [cityName]
+    );
+    
     if (rows.length === 0) {
       res.status(404).json({ message: 'City not found' });
     } else {
       res.json(rows[0]);
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error searching for city', error });
+    console.error('Error searching city:', error);
+    res.status(500).json({ message: 'Error searching for city', error: error.toString() });
   }
 });
 

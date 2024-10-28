@@ -161,3 +161,13 @@ export const getTouristSitesByRegion = async (regionId) => {
     throw error;
   }
 };
+
+export const searchCity = async (cityName) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/cities/search/${encodeURIComponent(cityName)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error searching city:', error);
+    return null;
+  }
+};

@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CircularProgress, Container } from '@mui/material';
-import { getCityByName } from '../services/api';
+import { CircularProgress, Container, Alert } from '@mui/material';
+import { searchCity } from '../services/api';
 
 function CitySearch() {
   const { cityName } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const searchCity = async () => {
+    const searchAndNavigate = async () => {
       try {
-        const city = await getCityByName(cityName);
+        const city = await searchCity(decodeURIComponent(cityName));
         if (city && city.id) {
           navigate(`/city/${city.id}`);
         } else {
@@ -22,7 +22,7 @@ function CitySearch() {
       }
     };
 
-    searchCity();
+    searchAndNavigate();
   }, [cityName, navigate]);
 
   return (

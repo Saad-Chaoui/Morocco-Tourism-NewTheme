@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const sharp = require('sharp');
 
 router.get('/proxy', async (req, res) => {
   const { url } = req.query;
@@ -36,6 +37,35 @@ router.get('/proxy', async (req, res) => {
     if (error.response) {
     }
     res.status(500).send('Error fetching media');
+  }
+});
+
+router.get('/optimize', async (req, res) => {
+  const { url, width } = req.query;
+  
+  if (!url) {
+    return res.status(400).send('URL parameter is required');
+  }
+
+  try {
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'image/*'
+      }
+    });
+
+    const optimizedImage = await sharp(response.data)
+      .resize(parseInt(width) || 800)
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    res.set('Content-Type', 'image/jpeg');
+    res.set('Cache-Control', 'public, max-age=31536000');
+    res.send(optimizedImage);
+  } catch (error) {
+    res.status(500).send('Error optimizing image');
   }
 });
 
