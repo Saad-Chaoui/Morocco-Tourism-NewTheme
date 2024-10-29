@@ -45,10 +45,10 @@ function Header() {
   const drawer = (
     <List>
       {menuItems.map((item) => (
-        <ListItem 
-          button 
-          key={item.text} 
-          component={RouterLink} 
+        <ListItem
+          button
+          key={item.text}
+          component={RouterLink}
           to={item.path}
           onClick={handleDrawerToggle}
           sx={{
@@ -68,9 +68,9 @@ function Header() {
   );
 
   return (
-    <AppBar 
-      position="sticky" 
-      sx={{ 
+    <AppBar
+      position="sticky"
+      sx={{
         backgroundColor: 'white',
         boxShadow: 'none',
         borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
@@ -79,6 +79,16 @@ function Header() {
       <Container maxWidth="lg">
         <Toolbar sx={{ justifyContent: 'space-between', px: { xs: 0, sm: 2 } }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="/images/morocco-flag.png"
+              alt="Morocco Flag"
+              style={{
+                height: '20px',
+                width: 'auto',
+                borderRadius: '2px',
+                marginRight: '8px',
+              }}
+            />
             <Typography
               variant="h6"
               component={RouterLink}
@@ -89,6 +99,7 @@ function Header() {
                 fontWeight: 'bold'
               }}
             >
+
               Morocco Tourism
             </Typography>
           </Box>
@@ -136,7 +147,7 @@ function Header() {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         sx={{
-          '& .MuiDrawer-paper': { 
+          '& .MuiDrawer-paper': {
             width: 240,
             backgroundColor: 'white',
           }

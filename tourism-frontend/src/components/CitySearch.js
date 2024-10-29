@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CircularProgress, Container, Alert } from '@mui/material';
+import { CircularProgress, Container } from '@mui/material';
 import { searchCity } from '../services/api';
 
 function CitySearch() {

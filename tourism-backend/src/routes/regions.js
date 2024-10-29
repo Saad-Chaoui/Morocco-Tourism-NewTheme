@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 
     // Fetch tourist sites for this region
     const [touristSitesRows] = await db.query('SELECT * FROM touristsites WHERE region_id = ?', [req.params.id]);
-    
+
     // Parse the images JSON string for each tourist site
     const touristSites = touristSitesRows.map(site => ({
       ...site,

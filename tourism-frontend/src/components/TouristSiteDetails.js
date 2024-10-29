@@ -14,10 +14,7 @@ import {
   Alert,
   IconButton,
   useTheme,
-  useMediaQuery,
-  Link as MuiLink,
-  Chip,
-  Skeleton
+  Link as MuiLink
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
@@ -28,8 +25,7 @@ import {
   DirectionsWalk as AccessibilityIcon,
   CheckCircle as OpenIcon,
   Cancel as ClosedIcon,
-  Warning as MaintenanceIcon,
-  LocationCity as CityIcon
+  Warning as MaintenanceIcon
 } from '@mui/icons-material';
 import { getTouristSite } from '../services/api';
 import './MonumentDetails.css';
@@ -49,7 +45,6 @@ function TouristSiteDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const parseNearestCities = (citiesString) => {
@@ -72,7 +67,7 @@ function TouristSiteDetails() {
       try {
         setLoading(true);
         const data = await getTouristSite(id);
-        
+
         // Parse nearest_cities before setting the state
         data.nearest_cities = parseNearestCities(data.nearest_cities);
         setSite(data);
@@ -98,7 +93,7 @@ function TouristSiteDetails() {
       // Handle YouTube URLs (including Shorts)
       if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
         let videoId;
-        
+
         if (videoUrl.includes('/shorts/')) {
           videoId = videoUrl.split('/shorts/')[1].split('?')[0];
         }
@@ -108,14 +103,14 @@ function TouristSiteDetails() {
         else {
           videoId = videoUrl.split('v=')[1].split('&')[0];
         }
-        
+
         return `https://www.youtube.com/embed/${videoId}`;
       }
-      
+
       // Handle TikTok URLs
       if (videoUrl.includes('tiktok.com')) {
         let videoId;
-        
+
         if (videoUrl.includes('/video/')) {
           videoId = videoUrl.split('/video/')[1].split('?')[0];
         }
@@ -134,7 +129,7 @@ function TouristSiteDetails() {
   };
 
   const getStatusIcon = (status) => {
-    switch(status) {
+    switch (status) {
       case 'open':
         return <OpenIcon sx={{ color: 'success.main' }} />;
       case 'closed':
@@ -152,8 +147,8 @@ function TouristSiteDetails() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 2 }}>
-      <Box sx={{ 
-        display: 'flex', 
+      <Box sx={{
+        display: 'flex',
         alignItems: 'center',
         mb: 2,
         backgroundColor: theme.palette.primary.main,
@@ -164,21 +159,21 @@ function TouristSiteDetails() {
         <IconButton color="inherit" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">Details</Typography>
+        <Typography variant="h6">Back to Monuments</Typography>
       </Box>
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Typography variant="h4" gutterBottom color="primary.main">
+          <Typography variant="h4" gutterBottom color="primary.main" paddingBottom={1}>
             {site.name}
           </Typography>
 
           {site.images && site.images.length > 0 && (
-            <Box 
-              sx={{ 
-                mb: 3, 
+            <Box
+              sx={{
+                mb: 3,
                 cursor: site.images.length > 1 ? 'pointer' : 'default',
-                position: 'relative' 
+                position: 'relative'
               }}
               onClick={handleImageClick}
             >
@@ -227,7 +222,7 @@ function TouristSiteDetails() {
                 <Typography variant="h6" gutterBottom color="primary.main">
                   Video Tour
                 </Typography>
-                <Box sx={{ 
+                <Box sx={{
                   position: 'relative',
                   paddingBottom: site.video.includes('tiktok.com') ? '177.77%' : '56.25%',
                   height: 0,
@@ -267,7 +262,7 @@ function TouristSiteDetails() {
               <Typography variant="h6" gutterBottom color="primary.main">
                 Visit Information
               </Typography>
-              
+
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {site.nearest_cities && site.nearest_cities.length > 0 && (
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -276,10 +271,10 @@ function TouristSiteDetails() {
                       Near: {site.nearest_cities.map((cityName, index) => (
                         <React.Fragment key={index}>
                           {index > 0 && ', '}
-                          <MuiLink 
-                            component={Link} 
+                          <MuiLink
+                            component={Link}
                             to={`/city/search/${encodeURIComponent(cityName)}`}
-                            sx={{ 
+                            sx={{
                               color: 'primary.main',
                               textDecoration: 'none',
                               '&:hover': {

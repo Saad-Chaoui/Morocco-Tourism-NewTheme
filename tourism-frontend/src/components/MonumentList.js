@@ -14,13 +14,11 @@ import {
   Pagination,
   useTheme,
   useMediaQuery,
-  Rating,
 } from '@mui/material';
 import {
   Search as SearchIcon,
   LocationOn as LocationIcon,
   AccessTime as AccessTimeIcon,
-  AccountBalance as AccountBalanceIcon,
 } from '@mui/icons-material';
 import { getMonuments } from '../services/api';
 

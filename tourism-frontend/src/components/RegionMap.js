@@ -5,7 +5,7 @@ import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 
 // Create colored markers using the default Leaflet marker
 const monumentIcon = new L.Icon.Default();
-monumentIcon.options.shadowSize = [0,0]; // Remove shadow for cleaner look
+monumentIcon.options.shadowSize = [0, 0]; // Remove shadow for cleaner look
 
 const touristSiteIcon = new L.divIcon({
   className: 'custom-div-icon',
@@ -28,18 +28,18 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
 
   // Calculate center position based on all locations
   const locations = [...monuments, ...touristSites].filter(loc => loc.latitude && loc.longitude);
-  
+
   const center = locations.length > 0
     ? [
-        locations.reduce((sum, loc) => sum + parseFloat(loc.latitude), 0) / locations.length,
-        locations.reduce((sum, loc) => sum + parseFloat(loc.longitude), 0) / locations.length
-      ]
+      locations.reduce((sum, loc) => sum + parseFloat(loc.latitude), 0) / locations.length,
+      locations.reduce((sum, loc) => sum + parseFloat(loc.longitude), 0) / locations.length
+    ]
     : [31.7917, -7.0926]; // Morocco center coordinates
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       height: { xs: '350px', sm: '400px', md: '500px' }, // Responsive heights
-      width: '100%', 
+      width: '100%',
       mb: { xs: 2, sm: 3, md: 4 }, // Responsive margins
       position: 'relative',
       '& .leaflet-div-icon': {
@@ -50,9 +50,9 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
       <MapContainer
         center={center}
         zoom={isMobile ? 6 : 7} // Adjust zoom level for mobile
-        style={{ 
-          height: '100%', 
-          width: '100%', 
+        style={{
+          height: '100%',
+          width: '100%',
           borderRadius: '8px',
           zIndex: 1
         }}
@@ -61,7 +61,7 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
+
         {/* Render Monuments */}
         {monuments.map((monument) => (
           monument.latitude && monument.longitude && (
@@ -71,33 +71,33 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
               icon={monumentIcon}
             >
               <Popup>
-                <Box sx={{ 
+                <Box sx={{
                   p: { xs: 0.5, sm: 1 },
                   maxWidth: { xs: '200px', sm: '300px' }
                 }}>
-                  <Typography 
-                    variant="subtitle1" 
-                    fontWeight="bold" 
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
                     color="primary"
-                    sx={{ 
+                    sx={{
                       fontSize: { xs: '0.875rem', sm: '1rem' }
                     }}
                   >
                     {monument.name}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
+                  <Typography
+                    variant="body2"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontSize: { xs: '0.75rem', sm: '0.875rem' }
                     }}
                   >
                     Monument
                   </Typography>
                   {monument.description && (
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
+                    <Typography
+                      variant="body2"
+                      sx={{
                         mt: 1,
                         fontSize: { xs: '0.75rem', sm: '0.875rem' },
                         display: '-webkit-box',
@@ -124,33 +124,33 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
               icon={touristSiteIcon}
             >
               <Popup>
-                <Box sx={{ 
+                <Box sx={{
                   p: { xs: 0.5, sm: 1 },
                   maxWidth: { xs: '200px', sm: '300px' }
                 }}>
-                  <Typography 
-                    variant="subtitle1" 
-                    fontWeight="bold" 
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
                     color="secondary"
-                    sx={{ 
+                    sx={{
                       fontSize: { xs: '0.875rem', sm: '1rem' }
                     }}
                   >
                     {site.name}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
+                  <Typography
+                    variant="body2"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontSize: { xs: '0.75rem', sm: '0.875rem' }
                     }}
                   >
                     Tourist Site
                   </Typography>
                   {site.description && (
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
+                    <Typography
+                      variant="body2"
+                      sx={{
                         mt: 1,
                         fontSize: { xs: '0.75rem', sm: '0.875rem' },
                         display: '-webkit-box',
@@ -183,11 +183,11 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
           fontSize: { xs: '0.75rem', sm: '0.875rem' }
         }}
       >
-        <Typography 
-          variant="body2" 
-          sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
+        <Typography
+          variant="body2"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
             mb: { xs: 0.5, sm: 1 },
             fontSize: 'inherit'
           }}
@@ -206,10 +206,10 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
           />
           Monuments
         </Typography>
-        <Typography 
-          variant="body2" 
-          sx={{ 
-            display: 'flex', 
+        <Typography
+          variant="body2"
+          sx={{
+            display: 'flex',
             alignItems: 'center',
             fontSize: 'inherit'
           }}

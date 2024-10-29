@@ -10,15 +10,15 @@ function Layout({ children }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column'
     }}>
       {!isMobile && <Header />}
-      <Box component="main" sx={{ 
+      <Box component="main" sx={{
         flexGrow: 1,
-        pt: isMobile ? 0 : 8,
+        pt: 0,
         pb: isMobile ? 7 : 3
       }}>
         {children}

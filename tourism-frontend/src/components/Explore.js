@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Typography, Box, Container, Card, CardContent,
   FormControl, InputLabel, Select, MenuItem,
-  useTheme, useMediaQuery, Button 
+  useTheme, useMediaQuery, Button
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  getRegions, 
-  getCitiesByRegion, 
-  getMonumentsByRegion, 
-  getTouristSitesByRegion, 
+import {
+  getRegions,
+  getCitiesByRegion,
+  getMonumentsByRegion,
+  getTouristSitesByRegion,
   getMonumentsByCity
 } from '../services/api';
 import RegionMap from './RegionMap';
@@ -19,7 +19,7 @@ function Explore() {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -89,9 +89,9 @@ function Explore() {
 
     return (
       <Box sx={{ my: 3 }}>
-        <Typography 
-          variant="h5" 
-          sx={{ 
+        <Typography
+          variant="h5"
+          sx={{
             mb: 2,
             color: 'primary.main',
             fontWeight: 'bold'
@@ -106,9 +106,9 @@ function Explore() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Card 
+            <Card
               onClick={() => handleCardClick(type, item.id)}
-              sx={{ 
+              sx={{
                 mb: 2,
                 cursor: 'pointer',
                 height: 'auto',
@@ -120,7 +120,7 @@ function Explore() {
                 }
               }}
             >
-              <Box sx={{ 
+              <Box sx={{
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
               }}>
@@ -142,17 +142,17 @@ function Explore() {
                     }}
                   />
                 </Box>
-                <CardContent sx={{ 
+                <CardContent sx={{
                   flex: 1,
                   p: 2,
                 }}>
                   <Typography variant="h6" gutterBottom>
                     {item.name}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
+                  <Typography
+                    variant="body2"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       mb: 2,
                       display: '-webkit-box',
                       WebkitLineClamp: 3,
@@ -181,7 +181,7 @@ function Explore() {
         ))}
         {items.length > ITEMS_TO_SHOW && (
           <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Button 
+            <Button
               onClick={(e) => {
                 e.stopPropagation();
                 setShowAll(!showAll);
@@ -219,20 +219,32 @@ function Explore() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
-        <Typography 
-          variant="h4" 
+
+        <Typography
+          variant="h4"
           gutterBottom
-          sx={{ 
+          sx={{
             color: 'primary.main',
             fontWeight: 600,
             mb: 1
           }}
         >
+          <img
+            src="/images/morocco-flag.png"
+            alt="Morocco Flag"
+            style={{
+              height: '24px',
+              width: 'auto',
+              borderRadius: '2px',
+              marginRight: '8px',
+              paddingTop: '6px'
+            }}
+          />
           Explore Morocco
         </Typography>
-        <Typography 
-          variant="subtitle1" 
-          sx={{ 
+        <Typography
+          variant="subtitle1"
+          sx={{
             color: 'text.secondary',
             mb: 3
           }}
@@ -241,15 +253,15 @@ function Explore() {
         </Typography>
       </Box>
 
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
         gap: 2,
         mb: 4
       }}>
         <FormControl fullWidth>
-          <InputLabel 
-            sx={{ 
+          <InputLabel
+            sx={{
               color: 'primary.main',
               '&.Mui-focused': {
                 color: 'primary.main',

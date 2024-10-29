@@ -18,6 +18,17 @@ function Footer() {
           <Grid item xs={12} sm={4}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white' }}>
+                <img
+                  src="/images/morocco-flag.png"
+                  alt="Morocco Flag"
+                  style={{
+                    height: '23px',
+                    width: 'auto',
+                    borderRadius: '2px',
+                    marginRight: '8px',
+                    paddingTop: '6px'
+                  }}
+                />
                 Morocco Tourism
               </Typography>
               <Typography variant="body2" sx={{ color: 'white' }}>
@@ -41,12 +52,13 @@ function Footer() {
           </Grid>
 
           <Grid item xs={12} sm={4}>
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
               alignItems: { xs: 'center', sm: 'flex-end' },
               gap: 1
             }}>
+
               <Typography variant="body2" sx={{ color: 'white' }}>
                 © {new Date().getFullYear()} NewDev MAROC
               </Typography>

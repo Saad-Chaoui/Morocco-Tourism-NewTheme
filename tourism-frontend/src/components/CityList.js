@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Typography, Grid, Card, CardContent,
-  Button, TextField, Box, CircularProgress, Rating,
+  Typography, Grid, Card, TextField, Box, CircularProgress, Rating,
   useTheme, useMediaQuery, Pagination, Container
 } from '@mui/material';
 import {
   Search as SearchIcon,
-  BeachAccess as BeachAccessIcon,
-  Landscape as LandscapeIcon,
   LocationCity as LocationCityIcon,
   People as PeopleIcon
 } from '@mui/icons-material';
@@ -44,19 +41,6 @@ function CityList() {
     setPage(value);
   };
 
-  const handleSearchChange = (e) => {
-    const newSearchTerm = e.target.value;
-    setSearchTerm(newSearchTerm);
-    setPage(1); // Reset to the first page when searching
-  };
-
-  // Ensure the search term updates correctly
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      // Optionally trigger a fetch here if you want to act on Enter press
-    }
-  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
@@ -64,7 +48,7 @@ function CityList() {
         <Typography variant="h4" gutterBottom color="primary.main">
           Explore Cities
         </Typography>
-        
+
         <TextField
           fullWidth
           variant="outlined"
@@ -109,7 +93,7 @@ function CityList() {
                       <Typography variant="h6" color="primary.main" gutterBottom>
                         {city.name}
                       </Typography>
-                      
+
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                         <LocationCityIcon sx={{ color: 'primary.main' }} fontSize="small" />
                         <Typography variant="body2" color="text.secondary">

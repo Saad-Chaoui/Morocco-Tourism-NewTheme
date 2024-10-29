@@ -26,9 +26,9 @@ router.get('/proxy', async (req, res) => {
       }
     });
 
-    
+
     const contentType = response.headers['content-type'];
-    
+
     res.set('Content-Type', contentType);
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Cache-Control', 'no-cache');
@@ -42,7 +42,7 @@ router.get('/proxy', async (req, res) => {
 
 router.get('/optimize', async (req, res) => {
   const { url, width } = req.query;
-  
+
   if (!url) {
     return res.status(400).send('URL parameter is required');
   }

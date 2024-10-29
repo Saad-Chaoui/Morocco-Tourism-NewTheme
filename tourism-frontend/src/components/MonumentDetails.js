@@ -10,9 +10,7 @@ import {
   CircularProgress,
   Alert,
   IconButton,
-  Divider,
   useTheme,
-  useMediaQuery,
   Link as MuiLink,
 } from '@mui/material';
 import {
@@ -21,16 +19,12 @@ import {
   AccessTime as AccessTimeIcon,
   AttachMoney as AttachMoneyIcon,
   History as HistoryIcon,
-  Architecture as ArchitectureIcon,
   CalendarMonth as CalendarIcon,
-  Favorite as FavoriteIcon,
-  Share as ShareIcon,
   CheckCircle as OpenIcon,
   Cancel as ClosedIcon,
   Warning as MaintenanceIcon,
 } from '@mui/icons-material';
 import { getMonument } from '../services/api';
-import ImageGallery from './ImageGallery';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -51,7 +45,6 @@ function MonumentDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -82,7 +75,7 @@ function MonumentDetails() {
       // Handle YouTube URLs (including Shorts)
       if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
         let videoId;
-        
+
         // Handle YouTube Shorts
         if (videoUrl.includes('/shorts/')) {
           videoId = videoUrl.split('/shorts/')[1].split('?')[0];
@@ -94,15 +87,15 @@ function MonumentDetails() {
         else {
           videoId = videoUrl.split('v=')[1].split('&')[0];
         }
-        
+
         return `https://www.youtube.com/embed/${videoId}`;
       }
-      
+
       // Handle TikTok URLs
       if (videoUrl.includes('tiktok.com')) {
         // Extract video ID from TikTok URL
         let videoId;
-        
+
         // Handle TikTok web URLs
         if (videoUrl.includes('/video/')) {
           videoId = videoUrl.split('/video/')[1].split('?')[0];
@@ -124,7 +117,7 @@ function MonumentDetails() {
   };
 
   const getStatusIcon = (status) => {
-    switch(status) {
+    switch (status) {
       case 'open':
         return <OpenIcon sx={{ color: 'success.main' }} />;
       case 'closed':
@@ -195,8 +188,8 @@ function MonumentDetails() {
   return (
     <Container maxWidth="lg" sx={{ py: 2 }}>
       {/* Header */}
-      <Box sx={{ 
-        display: 'flex', 
+      <Box sx={{
+        display: 'flex',
         alignItems: 'center',
         mb: 2,
         backgroundColor: theme.palette.primary.main,
@@ -207,24 +200,24 @@ function MonumentDetails() {
         <IconButton color="inherit" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">Details</Typography>
+        <Typography variant="h6">Back to Monuments</Typography>
       </Box>
 
       <Grid container spacing={3}>
         {/* Left Column */}
         <Grid item xs={12} md={8}>
           {/* Title */}
-          <Typography variant="h4" gutterBottom color="primary.main">
+          <Typography variant="h4" gutterBottom color="primary.main" paddingBottom={1}>
             {monument.name}
           </Typography>
 
           {/* Main Image */}
           {monument.images && monument.images.length > 0 && (
-            <Box 
-              sx={{ 
-                mb: 3, 
+            <Box
+              sx={{
+                mb: 3,
                 cursor: monument.images.length > 1 ? 'pointer' : 'default',
-                position: 'relative' 
+                position: 'relative'
               }}
               onClick={handleImageClick}
             >
@@ -281,7 +274,7 @@ function MonumentDetails() {
                 <Typography variant="h6" gutterBottom color="primary.main">
                   Video Tour
                 </Typography>
-                <Box sx={{ 
+                <Box sx={{
                   position: 'relative',
                   paddingBottom: monument.video.includes('tiktok.com') ? '177.77%' : '56.25%', // Adjust aspect ratio for TikTok
                   height: 0,
@@ -323,15 +316,15 @@ function MonumentDetails() {
               <Typography variant="h6" gutterBottom color="primary.main">
                 Visit Information
               </Typography>
-              
+
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <LocationIcon color="primary" />
                   <Typography>
-                    <MuiLink 
-                      component={Link} 
+                    <MuiLink
+                      component={Link}
                       to={`/city/${monument.city_id}`}
-                      sx={{ 
+                      sx={{
                         textDecoration: 'none',
                         '&:hover': {
                           textDecoration: 'underline'
@@ -379,10 +372,10 @@ function MonumentDetails() {
                         return (
                           <React.Fragment key={index}>
                             {index > 0 && ', '}
-                            <MuiLink 
-                              component={Link} 
+                            <MuiLink
+                              component={Link}
                               to={`/cities/search/${encodeURIComponent(cityName)}`}
-                              sx={{ 
+                              sx={{
                                 textDecoration: 'none',
                                 '&:hover': {
                                   textDecoration: 'underline'
@@ -412,8 +405,8 @@ function MonumentDetails() {
 
           {/* Map */}
           {monument && (
-            <MapSection 
-              latitude={parseFloat(monument.latitude)} 
+            <MapSection
+              latitude={parseFloat(monument.latitude)}
               longitude={parseFloat(monument.longitude)}
               name={monument.name}
             />

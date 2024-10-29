@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Container, Grid, Card, CardContent, CardMedia, Typography,
+  Container, Grid, Card, CardContent, Typography,
   Rating, Box, CircularProgress, CardActionArea
 } from '@mui/material';
 import { getAllRegions } from '../services/api';
-import { useTheme } from '@mui/material/styles';
 
 function RegionList() {
   const [regions, setRegions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const theme = useTheme();
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -51,13 +49,13 @@ function RegionList() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography 
-        variant="h4" 
-        component="h1" 
-        gutterBottom 
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
         align="center"
         color="primary"
-        sx={{ 
+        sx={{
           mb: 4,
           fontWeight: 'bold',
           textShadow: '2px 2px 4px rgba(0,0,0,0.1)'
@@ -68,7 +66,7 @@ function RegionList() {
       <Grid container spacing={3}>
         {Array.isArray(regions) && regions.map((region) => (
           <Grid item xs={12} sm={6} md={4} key={region.id}>
-            <Card 
+            <Card
               elevation={3}
               sx={{
                 height: '100%',
@@ -83,17 +81,17 @@ function RegionList() {
                 overflow: 'hidden'
               }}
             >
-              <CardActionArea 
-                component={Link} 
+              <CardActionArea
+                component={Link}
                 to={`/region/${region.id}`}
                 sx={{ height: '100%', p: 2 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography 
-                    variant="h5" 
-                    component="h2" 
+                  <Typography
+                    variant="h5"
+                    component="h2"
                     gutterBottom
-                    sx={{ 
+                    sx={{
                       color: 'primary.main',
                       fontWeight: 600,
                       mb: 2
@@ -101,9 +99,9 @@ function RegionList() {
                   >
                     {region.name}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
-                    color="text.secondary" 
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
                     paragraph
                     sx={{
                       overflow: 'hidden',
@@ -116,22 +114,22 @@ function RegionList() {
                   >
                     {region.description}
                   </Typography>
-                  <Box 
-                    sx={{ 
-                      display: 'flex', 
+                  <Box
+                    sx={{
+                      display: 'flex',
                       alignItems: 'center',
                       mt: 'auto'
                     }}
                   >
-                    <Rating 
-                      value={Number(region.tourism_rating)} 
-                      precision={0.5} 
-                      readOnly 
+                    <Rating
+                      value={Number(region.tourism_rating)}
+                      precision={0.5}
+                      readOnly
                       size="small"
                     />
-                    <Typography 
-                      variant="body2" 
-                      color="text.secondary" 
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
                       sx={{ ml: 1 }}
                     >
                       ({region.tourism_rating})

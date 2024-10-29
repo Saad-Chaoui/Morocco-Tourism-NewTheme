@@ -1,11 +1,10 @@
 import React from 'react';
-import { 
-  BottomNavigation, 
-  BottomNavigationAction, 
-  Paper,
-  useTheme 
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper
 } from '@mui/material';
-import { 
+import {
   Home as HomeIcon,
   LocationCity as LocationCityIcon,
   Landscape as LandscapeIcon,
@@ -18,18 +17,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function MobileNavigation() {
   const location = useLocation();
   const navigate = useNavigate();
-  const theme = useTheme();
 
   return (
-    <Paper 
-      sx={{ 
-        position: 'fixed', 
-        bottom: 0, 
-        left: 0, 
+    <Paper
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
         right: 0,
         zIndex: 1000,
         borderTop: '1px solid rgba(0,0,0,0.12)'
-      }} 
+      }}
       elevation={3}
     >
       <BottomNavigation
@@ -53,9 +51,9 @@ function MobileNavigation() {
           }
         }}
       >
-        <BottomNavigationAction 
-          label="Home" 
-          value="/" 
+        <BottomNavigationAction
+          label="Home"
+          value="/"
           icon={<HomeIcon />}
           sx={{
             '& .MuiSvgIcon-root': {
@@ -63,9 +61,9 @@ function MobileNavigation() {
             }
           }}
         />
-        <BottomNavigationAction 
-          label="Regions" 
-          value="/regions" 
+        <BottomNavigationAction
+          label="Regions"
+          value="/regions"
           icon={<LocationCityIcon />}
           sx={{
             '& .MuiSvgIcon-root': {
@@ -73,9 +71,9 @@ function MobileNavigation() {
             }
           }}
         />
-        <BottomNavigationAction 
-          label="Cities" 
-          value="/cities" 
+        <BottomNavigationAction
+          label="Cities"
+          value="/cities"
           icon={<LandscapeIcon />}
           sx={{
             '& .MuiSvgIcon-root': {
@@ -83,9 +81,9 @@ function MobileNavigation() {
             }
           }}
         />
-        <BottomNavigationAction 
-          label="Monuments" 
-          value="/monuments" 
+        <BottomNavigationAction
+          label="Monuments"
+          value="/monuments"
           icon={<MonumentIcon />}
           sx={{
             '& .MuiSvgIcon-root': {
@@ -93,9 +91,9 @@ function MobileNavigation() {
             }
           }}
         />
-        <BottomNavigationAction 
-          label="Sites" 
-          value="/tourist-sites" 
+        <BottomNavigationAction
+          label="Sites"
+          value="/tourist-sites"
           icon={<TouristSitesIcon />}
           sx={{
             '& .MuiSvgIcon-root': {
@@ -103,9 +101,9 @@ function MobileNavigation() {
             }
           }}
         />
-        <BottomNavigationAction 
-          label="Explore" 
-          value="/explore" 
+        <BottomNavigationAction
+          label="Explore"
+          value="/explore"
           icon={<ExploreIcon />}
           sx={{
             '& .MuiSvgIcon-root': {

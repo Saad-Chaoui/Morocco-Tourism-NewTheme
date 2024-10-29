@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
       WHERE c.name LIKE ? OR r.name LIKE ?
       LIMIT ? OFFSET ?
     `;
-    
+
     const countQuery = `
       SELECT COUNT(*) as total
       FROM cities c
@@ -52,7 +52,7 @@ router.get('/:id', async (req, res) => {
       LEFT JOIN regions r ON c.region_id = r.id
       WHERE c.id = ?
     `, [req.params.id]);
-    
+
     if (rows.length === 0) {
       res.status(404).json({ message: 'City not found' });
     } else {
@@ -68,10 +68,10 @@ router.get('/search/:name', async (req, res) => {
   try {
     const cityName = decodeURIComponent(req.params.name);
     const [rows] = await db.query(
-      'SELECT * FROM cities WHERE name = ?', 
+      'SELECT * FROM cities WHERE name = ?',
       [cityName]
     );
-    
+
     if (rows.length === 0) {
       res.status(404).json({ message: 'City not found' });
     } else {

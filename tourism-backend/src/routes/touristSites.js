@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
       LEFT JOIN regions r ON ts.region_id = r.id
       WHERE ts.name LIKE ? OR r.name LIKE ?
     `;
-    
+
     let countQuery = `
       SELECT COUNT(*) as total
       FROM touristsites ts
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     `;
 
     const searchParam = `%${search}%`;
-    
+
     // Get total count
     const [countResult] = await db.query(countQuery, [searchParam, searchParam]);
     const totalItems = countResult[0].total;
@@ -50,9 +50,9 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error in GET /tourist-sites:', error);
-    res.status(500).json({ 
-      message: 'Error fetching tourist sites', 
-      error: error.toString() 
+    res.status(500).json({
+      message: 'Error fetching tourist sites',
+      error: error.toString()
     });
   }
 });
@@ -68,7 +68,7 @@ router.get('/:id', async (req, res) => {
       try {
         site.images = JSON.parse(site.images || '[]');
         // Parse nearest_cities as simple array of strings
-        site.nearest_cities = JSON.parse(site.nearest_cities || '[]').map(city => 
+        site.nearest_cities = JSON.parse(site.nearest_cities || '[]').map(city =>
           typeof city === 'string' ? city : city.name
         );
       } catch (parseError) {

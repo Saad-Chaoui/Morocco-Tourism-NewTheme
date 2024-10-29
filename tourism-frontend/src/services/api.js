@@ -13,7 +13,7 @@ export const getTouristSites = async (page = 1, limit = 6, searchTerm = '') => {
     const response = await axios.get(`${API_BASE_URL}/tourist-sites`, {
       params: { page, limit, search: searchTerm }
     });
-    
+
     // Ensure we're returning data in the expected format
     return {
       data: response.data.data || [], // Array of tourist sites

@@ -49,7 +49,7 @@ function TouristSiteList() {
         setError(null);
         const response = await getTouristSites(page, 6, searchTerm);
         console.log('Tourist sites response:', response); // Debug log
-        
+
         setTouristSites(response.data);
         setTotalPages(response.totalPages);
       } catch (error) {
@@ -137,6 +137,8 @@ function TouristSiteList() {
                           sx={{
                             backgroundColor: 'secondary.main',
                             color: 'text.primary',
+                            mb: 1,
+                            mt: 0,
                           }}
                         />
                       )}

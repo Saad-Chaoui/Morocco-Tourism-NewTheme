@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Typography, Box, Grid, Card, CardContent, Button,
-  List, ListItem, ListItemText, Divider, Rating,
-  CircularProgress
+  ListItem, ListItemText, Divider, Rating,
+  CircularProgress, Container
 } from '@mui/material';
 import {
   LocationCity as CityIcon,
@@ -72,13 +72,13 @@ function RegionDetails() {
     if (!items.length) {
       return <Typography color="text.secondary">No items found</Typography>;
     }
-    
+
     return items.slice(0, shownItems).map(renderItem);
   };
 
   const renderViewMoreButton = (items, shownItems, setShownItems) => {
     if (items.length <= shownItems) return null;
-    
+
     return (
       <Button
         onClick={() => setShownItems(prev => items.length > prev ? items.length : INITIAL_ITEMS_TO_SHOW)}
@@ -97,12 +97,40 @@ function RegionDetails() {
   };
 
   return (
-    <Box sx={{ maxWidth: 1200, margin: 'auto', p: 3 }}>
+    <Container maxWidth="lg">
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          mb: 4,
+          mt: { xs: 2, md: 4 }
+        }}
+      >
+        <img
+          src="/images/morocco-flag.png"
+          alt="Morocco Flag"
+          style={{
+            height: '24px',
+            width: 'auto',
+            borderRadius: '2px'
+          }}
+        />
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 600,
+            color: 'primary.main'
+          }}
+        >
+          {region.name} Region
+        </Typography>
+      </Box>
       <Button
         component={Link}
         to="/regions"
         startIcon={<ArrowBackIcon />}
-        sx={{ 
+        sx={{
           mb: 3,
           color: 'primary.main',
           '&:hover': {
@@ -113,7 +141,7 @@ function RegionDetails() {
       >
         Back to Regions
       </Button>
-      
+
       <Card elevation={3} sx={{ mb: 4 }}>
         <CardContent sx={{ p: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>
@@ -128,9 +156,9 @@ function RegionDetails() {
           <Typography variant="body1" paragraph>
             {showFullDescription ? region.description : `${region.description.slice(0, 200)}...`}
           </Typography>
-          <Button 
-            onClick={() => setShowFullDescription(!showFullDescription)} 
-            size="small" 
+          <Button
+            onClick={() => setShowFullDescription(!showFullDescription)}
+            size="small"
             color="primary"
           >
             {showFullDescription ? 'Show Less' : 'Read More'}
@@ -157,10 +185,10 @@ function RegionDetails() {
                       primary={city.name}
                       secondary={
                         <Box display="flex" alignItems="center">
-                          <Rating 
+                          <Rating
                             value={Number(city.tourism_rating) || 0}
-                            readOnly 
-                            size="small" 
+                            readOnly
+                            size="small"
                             precision={0.5}
                           />
                         </Box>
@@ -229,7 +257,7 @@ function RegionDetails() {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 }
 

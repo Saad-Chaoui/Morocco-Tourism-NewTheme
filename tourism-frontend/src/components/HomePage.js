@@ -8,55 +8,60 @@ function HomePage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const categories = [
-    { 
-      title: 'Regions', 
-      icon: <Landscape sx={{ color: 'white' }} />, 
-      color: theme.palette.primary.main, 
+    {
+      title: 'Regions',
+      icon: <Landscape sx={{ color: 'white' }} />,
+      color: theme.palette.primary.main,
       link: '/regions',
       description: 'Explore Morocco\'s diverse regions'
     },
-    { 
-      title: 'Cities', 
-      icon: <LocationCity sx={{ color: 'white' }} />, 
-      color: theme.palette.primary.main, 
+    {
+      title: 'Cities',
+      icon: <LocationCity sx={{ color: 'white' }} />,
+      color: theme.palette.primary.main,
       link: '/cities',
       description: 'Discover historic Moroccan cities'
     },
-    { 
-      title: 'Monuments', 
-      icon: <AccountBalance sx={{ color: 'white' }} />, 
-      color: theme.palette.primary.main, 
+    {
+      title: 'Monuments',
+      icon: <AccountBalance sx={{ color: 'white' }} />,
+      color: theme.palette.primary.main,
       link: '/monuments',
       description: 'Visit magnificent monuments'
     },
-    { 
-      title: 'Tourist Sites', 
-      icon: <BeachAccess sx={{ color: 'white' }} />, 
-      color: theme.palette.primary.main, 
+    {
+      title: 'Tourist Sites',
+      icon: <BeachAccess sx={{ color: 'white' }} />,
+      color: theme.palette.primary.main,
       link: '/tourist-sites',
       description: 'Experience amazing attractions'
     },
   ];
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         bgcolor: 'background.default',
-        minHeight: 'calc(100vh - 64px)', // Adjust for header height
-        py: isMobile ? 4 : 8,
+        minHeight: `calc(100vh - ${isMobile ? '0px' : '64px'})`, // Adjust for header height
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("/morocco-background.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundAttachment: 'fixed', // Optional: creates a parallax effect
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        pt: isMobile ? 4 : 0, // Remove padding top on desktop
+        pb: isMobile ? 4 : 8
       }}
     >
       <Container maxWidth="lg">
-        <Typography 
-          variant={isMobile ? "h3" : "h2"} 
-          component="h1" 
-          gutterBottom 
-          align="center" 
+        <Typography
+          variant={isMobile ? "h3" : "h2"}
+          component="h1"
+          gutterBottom
+          align="center"
           color="primary"
-          sx={{ 
+          sx={{
             fontWeight: 'bold',
             mb: 3,
             textShadow: '2px 2px 4px rgba(0,0,0,0.1)'
@@ -64,10 +69,10 @@ function HomePage() {
         >
           Discover Morocco
         </Typography>
-        <Typography 
-          variant={isMobile ? "h6" : "h5"} 
-          align="center" 
-          color="text.secondary" 
+        <Typography
+          variant={isMobile ? "h6" : "h5"}
+          align="center"
+          color="text.secondary"
           paragraph
           sx={{ mb: 6 }}
         >
@@ -111,11 +116,11 @@ function HomePage() {
                   >
                     {category.icon}
                   </Box>
-                  <Typography 
-                    variant="h5" 
-                    component="h3" 
+                  <Typography
+                    variant="h5"
+                    component="h3"
                     gutterBottom
-                    sx={{ 
+                    sx={{
                       color: theme.palette.primary.main,
                       fontWeight: 600,
                       mb: 1
@@ -123,8 +128,8 @@ function HomePage() {
                   >
                     {category.title}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
+                  <Typography
+                    variant="body2"
                     color="text.secondary"
                     sx={{ mb: 2 }}
                   >
