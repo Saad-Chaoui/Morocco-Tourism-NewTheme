@@ -14,6 +14,7 @@ import {
   getMonumentsByCity
 } from '../services/api';
 import RegionMap from './RegionMap';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function Explore() {
   const theme = useTheme();
@@ -29,6 +30,7 @@ function Explore() {
   const [showResults, setShowResults] = useState(false);
   const [showAllMonuments, setShowAllMonuments] = useState(false);
   const [showAllTouristSites, setShowAllTouristSites] = useState(false);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   const ITEMS_TO_SHOW = isMobile ? 3 : 4;
 
@@ -216,6 +218,68 @@ function Explore() {
     fetchLocations();
   }, [selectedRegion]);
 
+  const handleMarkerClick = (type, id) => {
+    setSelectedMarker({ type, id });
+    setShowResults(true);
+  };
+
+  const clearMarkerSelection = () => {
+    setSelectedMarker(null);
+  };
+
+  const filteredMonuments = selectedMarker && selectedMarker.type === 'monument'
+    ? monuments.filter(m => m.id === selectedMarker.id)
+    : monuments;
+
+  const filteredTouristSites = selectedMarker && selectedMarker.type === 'tourist-site'
+    ? touristSites.filter(s => s.id === selectedMarker.id)
+    : touristSites;
+
+  const renderResults = () => {
+    if (!showResults) return null;
+
+    return (
+      <Box sx={{ mt: 4 }}>
+        {selectedMarker && (
+          <Button
+            onClick={() => setSelectedMarker(null)}
+            variant="outlined"
+            sx={{ mb: 2 }}
+            startIcon={<ClearIcon />}
+          >
+            Show All Locations
+          </Button>
+        )}
+
+        {/* Only show monuments section if no tourist site is selected */}
+        {(!selectedMarker || selectedMarker.type === 'monument') && (
+          renderSection(
+            'Monuments',
+            selectedMarker 
+              ? monuments.filter(m => m.id === selectedMarker.id)
+              : monuments,
+            showAllMonuments,
+            setShowAllMonuments,
+            'monument'
+          )
+        )}
+
+        {/* Only show tourist sites section if no monument is selected */}
+        {(!selectedMarker || selectedMarker.type === 'tourist-site') && (
+          renderSection(
+            'Tourist Sites',
+            selectedMarker 
+              ? touristSites.filter(s => s.id === selectedMarker.id)
+              : touristSites,
+            showAllTouristSites,
+            setShowAllTouristSites,
+            'tourist-site'
+          )
+        )}
+      </Box>
+    );
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
@@ -338,15 +402,12 @@ function Explore() {
           monuments={monuments}
           touristSites={touristSites}
           selectedCity={selectedCity}
+          onMarkerClick={handleMarkerClick}
+          selectedMarker={selectedMarker}
         />
       )}
 
-      {showResults && (
-        <Box sx={{ mt: 4 }}>
-          {renderSection('Monuments', monuments, showAllMonuments, setShowAllMonuments, 'monument')}
-          {renderSection('Tourist Sites', touristSites, showAllTouristSites, setShowAllTouristSites, 'tourist-site')}
-        </Box>
-      )}
+      {renderResults()}
     </Container>
   );
 }

@@ -12,6 +12,8 @@ import CityDetails from './components/CityDetails';
 import NotFound from './components/NotFound';
 import Explore from './components/Explore';
 import CitySearch from './components/CitySearch'; // Add this import
+import AccommodationList from './components/AccommodationList';
+import AccommodationDetails from './components/AccommodationDetails';
 
 
 function AppRoutes() {
@@ -28,6 +30,8 @@ function AppRoutes() {
       <Route path="/region/:id" element={<RegionDetails />} />
       <Route path="/city/:id" element={<CityDetails />} />
       <Route path="/explore" element={<Explore />} />
+      <Route path="/accommodations" element={<AccommodationList />} />
+      <Route path="/accommodation/:id" element={<AccommodationDetails />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

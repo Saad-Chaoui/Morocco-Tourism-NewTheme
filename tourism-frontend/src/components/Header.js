@@ -1,160 +1,159 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Box,
-  Container,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
+import { 
+  AppBar, 
+  Toolbar, 
+  Typography, 
+  Button, 
+  Box, 
+  useTheme, 
   useMediaQuery,
-  useTheme,
+  Menu,
+  MenuItem
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import {
-  Menu as MenuIcon,
-  Explore as ExploreIcon,
-  TerrainOutlined as RegionsIcon,
-  LocationCityOutlined as CitiesIcon,
-  AccountBalanceOutlined as MonumentsIcon,
-  BeachAccessOutlined as TouristSitesIcon,
+  Explore,
+  LocationCity,
+  Landscape,
+  AccountBalance,
+  Hotel,
+  Place,
+  ExpandMore
 } from '@mui/icons-material';
 
 function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [currentMenu, setCurrentMenu] = useState('');
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleMenuClick = (event, menuId) => {
+    setAnchorEl(event.currentTarget);
+    setCurrentMenu(menuId);
+  };
+  
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setCurrentMenu('');
   };
 
-  const menuItems = [
-    { text: 'Explore', path: '/explore', icon: <ExploreIcon sx={{ color: 'primary.main' }} /> },
-    { text: 'Regions', path: '/regions', icon: <RegionsIcon sx={{ color: 'primary.main' }} /> },
-    { text: 'Cities', path: '/cities', icon: <CitiesIcon sx={{ color: 'primary.main' }} /> },
-    { text: 'Monuments', path: '/monuments', icon: <MonumentsIcon sx={{ color: 'primary.main' }} /> },
-    { text: 'Tourist Sites', path: '/tourist-sites', icon: <TouristSitesIcon sx={{ color: 'primary.main' }} /> },
+  const navItems = [
+    { 
+      text: 'Discover',
+      icon: <Place />,
+      hasSubmenu: true,
+      menuId: 'discover',
+      submenuItems: [
+        { text: 'Explore All', path: '/explore', icon: <Explore /> },
+        { text: 'Tourist Sites', path: '/tourist-sites', icon: <Place /> },
+        { text: 'Monuments', path: '/monuments', icon: <AccountBalance /> }
+      ]
+    },
+    { 
+      text: 'Destinations', 
+      path: '/regions',
+      icon: <Landscape />,
+      hasSubmenu: true,
+      menuId: 'destinations',
+      submenuItems: [
+        { text: 'Regions', path: '/regions', icon: <Landscape /> },
+        { text: 'Cities', path: '/cities', icon: <LocationCity /> }
+      ]
+    },
+    { text: 'Accommodations', path: '/accommodations', icon: <Hotel /> }
   ];
 
-  const drawer = (
-    <List>
-      {menuItems.map((item) => (
-        <ListItem
-          button
-          key={item.text}
-          component={RouterLink}
-          to={item.path}
-          onClick={handleDrawerToggle}
+  return (
+    <AppBar position="sticky" sx={{ bgcolor: 'primary.main' }}>
+      <Toolbar>
+        <Typography
+          variant="h6"
+          component={Link}
+          to="/"
           sx={{
-            '&:hover': {
-              backgroundColor: 'rgba(0,91,92,0.08)',
-              color: 'primary.main',
-            }
+            flexGrow: 1,
+            textDecoration: 'none',
+            color: 'inherit',
+            fontWeight: 'bold'
           }}
         >
-          <ListItemIcon sx={{ color: 'primary.main' }}>
-            {item.icon}
-          </ListItemIcon>
-          <ListItemText primary={item.text} />
-        </ListItem>
-      ))}
-    </List>
-  );
-
-  return (
-    <AppBar
-      position="sticky"
-      sx={{
-        backgroundColor: 'white',
-        boxShadow: 'none',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
-      }}
-    >
-      <Container maxWidth="lg">
-        <Toolbar sx={{ justifyContent: 'space-between', px: { xs: 0, sm: 2 } }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              src="/images/morocco-flag.png"
-              alt="Morocco Flag"
-              style={{
-                height: '20px',
-                width: 'auto',
-                borderRadius: '2px',
-                marginRight: '8px',
-              }}
-            />
-            <Typography
-              variant="h6"
-              component={RouterLink}
-              to="/"
-              sx={{
-                color: 'primary.main',
-                textDecoration: 'none',
-                fontWeight: 'bold'
-              }}
-            >
-
-              Morocco Tourism
-            </Typography>
-          </Box>
-
-          {!isMobile && (
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              {menuItems.map((item) => (
-                <Button
-                  key={item.text}
-                  component={RouterLink}
-                  to={item.path}
-                  startIcon={item.icon}
-                  sx={{
-                    color: 'text.primary',
-                    '&:hover': {
-                      color: 'primary.main',
-                      backgroundColor: 'rgba(0,91,92,0.08)',
-                    },
-                    borderRadius: 2,
-                    px: 2,
+          <img
+                  src="/images/morocco-flag.png"
+                  alt="Morocco Flag"
+                  style={{
+                    height: '23px',
+                    width: 'auto',
+                    borderRadius: '2px',
+                    marginRight: '8px',
+                    paddingTop: '6px'
                   }}
-                >
-                  {item.text}
-                </Button>
-              ))}
-            </Box>
-          )}
-
-          {isMobile && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerToggle}
-              sx={{ color: 'primary.main' }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-        </Toolbar>
-      </Container>
-
-      <Drawer
-        anchor="right"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        sx={{
-          '& .MuiDrawer-paper': {
-            width: 240,
-            backgroundColor: 'white',
-          }
-        }}
-      >
-        {drawer}
-      </Drawer>
+                />
+          Morocco Travel
+        </Typography>
+        
+        {!isMobile && (
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            {navItems.map((item) => (
+              <React.Fragment key={item.text}>
+                {item.hasSubmenu ? (
+                  <>
+                    <Button
+                      onClick={(e) => handleMenuClick(e, item.menuId)}
+                      startIcon={item.icon}
+                      endIcon={<ExpandMore />}
+                      sx={{
+                        color: 'white',
+                        '&:hover': {
+                          bgcolor: 'primary.dark',
+                        },
+                      }}
+                    >
+                      {item.text}
+                    </Button>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl) && currentMenu === item.menuId}
+                      onClose={handleMenuClose}
+                    >
+                      {item.submenuItems.map((subItem) => (
+                        <MenuItem
+                          key={subItem.text}
+                          component={Link}
+                          to={subItem.path}
+                          onClick={handleMenuClose}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                          }}
+                        >
+                          {subItem.icon}
+                          {subItem.text}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </>
+                ) : (
+                  <Button
+                    component={Link}
+                    to={item.path}
+                    startIcon={item.icon}
+                    sx={{
+                      color: 'white',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      },
+                    }}
+                  >
+                    {item.text}
+                  </Button>
+                )}
+              </React.Fragment>
+            ))}
+          </Box>
+        )}
+      </Toolbar>
     </AppBar>
   );
 }

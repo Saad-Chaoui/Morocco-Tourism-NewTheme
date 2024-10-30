@@ -171,3 +171,57 @@ export const searchCity = async (cityName) => {
     return null;
   }
 };
+
+// Add these new accommodation-related functions
+
+export const getAccommodations = async (page = 1, limit = 6, searchTerm = '', type = '') => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations`, {
+      params: { page, limit, search: searchTerm, type }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodations:', error);
+    throw error;
+  }
+};
+
+export const getAccommodation = async (id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodation:', error);
+    throw error;
+  }
+};
+
+export const getAccommodationsByCity = async (cityId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations/city/${cityId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodations for city:', error);
+    throw error;
+  }
+};
+
+export const getAccommodationsByRegion = async (regionId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations/region/${regionId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodations for region:', error);
+    throw error;
+  }
+};
+
+export const getAccommodationsByType = async (type) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations/type/${type}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodations by type:', error);
+    throw error;
+  }
+};

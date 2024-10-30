@@ -4,6 +4,7 @@ const regionsRouter = require('./routes/regions');
 const citiesRouter = require('./routes/cities');
 const monumentsRouter = require('./routes/monuments');
 const touristSitesRouter = require('./routes/touristSites');
+const accommodationsRouter = require('./routes/accommodations');
 const imagesRouter = require('./routes/images');
 const path = require('path');
 
@@ -23,6 +24,7 @@ app.use('/api/regions', regionsRouter);
 app.use('/api/cities', citiesRouter);
 app.use('/api/monuments', monumentsRouter);
 app.use('/api/tourist-sites', touristSitesRouter);
+app.use('/api/accommodations', accommodationsRouter);
 app.use('/api/images', imagesRouter);
 
 const PORT = process.env.PORT || 5002;

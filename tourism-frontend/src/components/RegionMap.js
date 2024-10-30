@@ -22,7 +22,7 @@ const touristSiteIcon = new L.divIcon({
   popupAnchor: [1, -12],
 });
 
-function RegionMap({ monuments, touristSites, selectedCity }) {
+function RegionMap({ monuments, touristSites, selectedCity, onMarkerClick }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -69,6 +69,9 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
               key={`monument-${monument.id}`}
               position={[parseFloat(monument.latitude), parseFloat(monument.longitude)]}
               icon={monumentIcon}
+              eventHandlers={{
+                click: () => onMarkerClick('monument', monument.id)
+              }}
             >
               <Popup>
                 <Box sx={{
@@ -122,6 +125,9 @@ function RegionMap({ monuments, touristSites, selectedCity }) {
               key={`site-${site.id}`}
               position={[parseFloat(site.latitude), parseFloat(site.longitude)]}
               icon={touristSiteIcon}
+              eventHandlers={{
+                click: () => onMarkerClick('tourist-site', site.id)
+              }}
             >
               <Popup>
                 <Box sx={{

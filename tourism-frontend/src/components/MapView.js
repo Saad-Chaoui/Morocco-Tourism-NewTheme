@@ -1,46 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { getMonuments, getTouristSites } from '../services/api';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// Fix Leaflet's default icon path issues
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+// Set up the default icon
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 
-function MapView() {
-  const [monuments, setMonuments] = useState([]);
-  const [touristSites, setTouristSites] = useState([]);
+// Set default icon for all markers
+L.Marker.prototype.options.icon = DefaultIcon;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const monumentsData = await getMonuments();
-      const touristSitesData = await getTouristSites();
-      setMonuments(monumentsData);
-      setTouristSites(touristSitesData);
-    } catch (error) {
-    }
-  };
-
+function MapView({ 
+  center, 
+  zoom, 
+  accommodations = [],
+  onMarkerClick,
+  selectedAccommodation
+}) {
   return (
-    <MapContainer center={[0, 0]} zoom={2} style={{ height: '500px', width: '100%' }}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {monuments.map((monument) => (
-        <Marker key={monument.id} position={[monument.latitude, monument.longitude]}>
-          <Popup>{monument.name}</Popup>
-        </Marker>
-      ))}
-      {touristSites.map((site) => (
-        <Marker key={site.id} position={[site.latitude, site.longitude]}>
-          <Popup>{site.name}</Popup>
+    <MapContainer
+      center={center}
+      zoom={zoom}
+      style={{ height: '100%', width: '100%' }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+
+      {accommodations.map((accommodation) => (
+        <Marker
+          key={`accommodation-${accommodation.id}`}
+          position={[accommodation.latitude, accommodation.longitude]}
+          eventHandlers={{
+            click: () => onMarkerClick && onMarkerClick(accommodation)
+          }}
+          opacity={selectedAccommodation ? (selectedAccommodation.id === accommodation.id ? 1 : 0.5) : 1}
+        >
+          <Popup>
+            <div>
+              <h3>{accommodation.name}</h3>
+              <p>{accommodation.type} in {accommodation.city_name}</p>
+              <p>Rating: {accommodation.rating}/5</p>
+            </div>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>
