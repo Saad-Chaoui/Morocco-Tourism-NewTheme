@@ -1,241 +1,124 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+import 'leaflet/dist/leaflet.css';
 
-// Create colored markers using the default Leaflet marker
-const monumentIcon = new L.Icon.Default();
-monumentIcon.options.shadowSize = [0, 0]; // Remove shadow for cleaner look
+// Fix for default marker icons in Leaflet with React
+delete L.Icon.Default.prototype._getIconUrl;
 
-const touristSiteIcon = new L.divIcon({
-  className: 'custom-div-icon',
-  html: `<div style="
-    background-color: #005B5C; 
-    width: 25px; 
-    height: 25px; 
-    border-radius: 50%; 
-    border: 3px solid white;
-    box-shadow: 0 0 4px rgba(0,0,0,0.3);
-  "></div>`,
-  iconSize: [25, 25],
-  iconAnchor: [12, 12],
-  popupAnchor: [1, -12],
+// Create custom icons for monuments and tourist sites
+const monumentIcon = new L.Icon({
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
-function RegionMap({ monuments, touristSites, selectedCity, onMarkerClick }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+const touristSiteIcon = new L.Icon({
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+  className: 'tourist-site-marker'
+});
 
-  // Calculate center position based on all locations
-  const locations = [...monuments, ...touristSites].filter(loc => loc.latitude && loc.longitude);
+// Add CSS styles for the tourist site marker
+const markerStyles = `
+  .tourist-site-marker {
+    filter: hue-rotate(120deg);
+  }
+  
+  .map-legend {
+    padding: 6px 10px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-size: 12px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  
+  .legend-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .legend-marker {
+    width: 12px;
+    height: 20px;
+    margin-right: 6px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .legend-marker.monument {
+    background-image: url(${require('leaflet/dist/images/marker-icon.png')});
+  }
+  
+  .legend-marker.tourist-site {
+    background-image: url(${require('leaflet/dist/images/marker-icon.png')});
+    filter: hue-rotate(120deg);
+  }
+`;
 
-  const center = locations.length > 0
-    ? [
-      locations.reduce((sum, loc) => sum + parseFloat(loc.latitude), 0) / locations.length,
-      locations.reduce((sum, loc) => sum + parseFloat(loc.longitude), 0) / locations.length
-    ]
-    : [31.7917, -7.0926]; // Morocco center coordinates
-
+function RegionMap({ markers, center, zoom, onMarkerClick, selectedMarker }) {
   return (
-    <Box sx={{
-      height: { xs: '350px', sm: '400px', md: '500px' }, // Responsive heights
-      width: '100%',
-      mb: { xs: 2, sm: 3, md: 4 }, // Responsive margins
-      position: 'relative',
-      '& .leaflet-div-icon': {
-        background: 'transparent',
-        border: 'none'
-      }
-    }}>
+    <>
+      <style>{markerStyles}</style>
       <MapContainer
         center={center}
-        zoom={isMobile ? 6 : 7} // Adjust zoom level for mobile
-        style={{
-          height: '100%',
-          width: '100%',
-          borderRadius: '8px',
-          zIndex: 1
-        }}
+        zoom={zoom}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-
-        {/* Render Monuments */}
-        {monuments.map((monument) => (
-          monument.latitude && monument.longitude && (
-            <Marker
-              key={`monument-${monument.id}`}
-              position={[parseFloat(monument.latitude), parseFloat(monument.longitude)]}
-              icon={monumentIcon}
-              eventHandlers={{
-                click: () => onMarkerClick('monument', monument.id)
-              }}
-            >
-              <Popup>
-                <Box sx={{
-                  p: { xs: 0.5, sm: 1 },
-                  maxWidth: { xs: '200px', sm: '300px' }
-                }}>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    color="primary"
-                    sx={{
-                      fontSize: { xs: '0.875rem', sm: '1rem' }
-                    }}
-                  >
-                    {monument.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                    }}
-                  >
-                    Monument
-                  </Typography>
-                  {monument.description && (
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        mt: 1,
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {monument.description.substring(0, isMobile ? 50 : 100)}...
-                    </Typography>
-                  )}
-                </Box>
-              </Popup>
-            </Marker>
-          )
+        {markers.map((marker) => (
+          <Marker
+            key={`${marker.type}-${marker.id}`}
+            position={marker.position}
+            icon={marker.type === 'monument' ? monumentIcon : touristSiteIcon}
+            eventHandlers={{
+              click: () => onMarkerClick(marker.type, marker.id),
+            }}
+          >
+            <Popup>
+              <div>
+                <strong>{marker.title}</strong>
+                <br />
+                {marker.type === 'monument' ? 'Monument' : 'Tourist Site'}
+              </div>
+            </Popup>
+          </Marker>
         ))}
-
-        {/* Render Tourist Sites */}
-        {touristSites.map((site) => (
-          site.latitude && site.longitude && (
-            <Marker
-              key={`site-${site.id}`}
-              position={[parseFloat(site.latitude), parseFloat(site.longitude)]}
-              icon={touristSiteIcon}
-              eventHandlers={{
-                click: () => onMarkerClick('tourist-site', site.id)
-              }}
-            >
-              <Popup>
-                <Box sx={{
-                  p: { xs: 0.5, sm: 1 },
-                  maxWidth: { xs: '200px', sm: '300px' }
-                }}>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    color="secondary"
-                    sx={{
-                      fontSize: { xs: '0.875rem', sm: '1rem' }
-                    }}
-                  >
-                    {site.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                    }}
-                  >
-                    Tourist Site
-                  </Typography>
-                  {site.description && (
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        mt: 1,
-                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {site.description.substring(0, isMobile ? 50 : 100)}...
-                    </Typography>
-                  )}
-                </Box>
-              </Popup>
-            </Marker>
-          )
-        ))}
-      </MapContainer>
-
-      {/* Legend with responsive positioning and sizing */}
-      <Box
-        sx={{
+        <div className="map-legend" style={{
           position: 'absolute',
-          bottom: { xs: '10px', sm: '20px' },
-          right: { xs: '10px', sm: '20px' },
-          backgroundColor: 'white',
-          padding: { xs: '8px', sm: '10px' },
-          borderRadius: '4px',
-          boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-          zIndex: 1000,
-          fontSize: { xs: '0.75rem', sm: '0.875rem' }
-        }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mb: { xs: 0.5, sm: 1 },
-            fontSize: 'inherit'
-          }}
-        >
-          <Box
-            component="span"
-            sx={{
-              width: { xs: '16px', sm: '20px' },
-              height: { xs: '16px', sm: '20px' },
-              backgroundColor: '#2196F3',
-              borderRadius: '50%',
-              marginRight: { xs: '6px', sm: '8px' },
-              border: '2px solid white',
-              boxShadow: '0 0 4px rgba(0,0,0,0.3)'
-            }}
-          />
-          Monuments
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: 'inherit'
-          }}
-        >
-          <Box
-            component="span"
-            sx={{
-              width: { xs: '16px', sm: '20px' },
-              height: { xs: '16px', sm: '20px' },
-              backgroundColor: '#005B5C',
-              borderRadius: '50%',
-              marginRight: { xs: '6px', sm: '8px' },
-              border: '2px solid white',
-              boxShadow: '0 0 4px rgba(0,0,0,0.3)'
-            }}
-          />
-          Tourist Sites
-        </Typography>
-      </Box>
-    </Box>
+          bottom: '10px',
+          right: '10px',
+          zIndex: 1000
+        }}>
+          <div className="legend-item">
+            <div className="legend-marker monument"></div>
+            <span>Monuments</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-marker tourist-site"></div>
+            <span>Tourist Sites</span>
+          </div>
+        </div>
+      </MapContainer>
+    </>
   );
 }
 

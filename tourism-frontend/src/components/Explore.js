@@ -11,10 +11,13 @@ import {
   getCitiesByRegion,
   getMonumentsByRegion,
   getTouristSitesByRegion,
-  getMonumentsByCity
+  getMonumentsByCity,
+  getMonuments,
+  getTouristSites
 } from '../services/api';
 import RegionMap from './RegionMap';
 import ClearIcon from '@mui/icons-material/Clear';
+import MapIcon from '@mui/icons-material/Map';
 
 function Explore() {
   const theme = useTheme();
@@ -23,14 +26,18 @@ function Explore() {
 
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [selectedCity, setSelectedCity] = useState('all');
   const [monuments, setMonuments] = useState([]);
   const [touristSites, setTouristSites] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [showAllMonuments, setShowAllMonuments] = useState(false);
   const [showAllTouristSites, setShowAllTouristSites] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [showMap, setShowMap] = useState(false);
+  const [mapMarkers, setMapMarkers] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 31.7917, lng: -7.0926 });
+  const [mapZoom, setMapZoom] = useState(6);
 
   const ITEMS_TO_SHOW = isMobile ? 3 : 4;
 
@@ -51,7 +58,7 @@ function Explore() {
   // Fetch cities when region is selected
   useEffect(() => {
     const fetchCities = async () => {
-      if (selectedRegion) {
+      if (selectedRegion && selectedRegion !== 'all') {
         try {
           const response = await getCitiesByRegion(selectedRegion);
           setCities(response || []);
@@ -76,7 +83,7 @@ function Explore() {
   };
 
   const renderSection = (title, items, showAll, setShowAll, type) => {
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
       return (
         <Box sx={{ my: 3 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>{title}</Typography>
@@ -134,7 +141,11 @@ function Explore() {
                   }}
                 >
                   <img
-                    src={item.images ? JSON.parse(item.images)[0] : ''}
+                    src={item.images && typeof item.images === 'string' 
+                      ? JSON.parse(item.images)[0] 
+                      : Array.isArray(item.images) 
+                        ? item.images[0] 
+                        : ''}
                     alt={item.name}
                     style={{
                       width: '100%',
@@ -201,22 +212,76 @@ function Explore() {
 
   useEffect(() => {
     const fetchLocations = async () => {
-      if (selectedRegion) {
-        try {
-          const [monumentsData, sitesData] = await Promise.all([
-            getMonumentsByRegion(selectedRegion.id),
-            getTouristSitesByRegion(selectedRegion.id)
-          ]);
-          setMonuments(monumentsData);
-          setTouristSites(sitesData);
-        } catch (error) {
-          console.error('Error fetching locations:', error);
+      try {
+        let monumentsData, sitesData;
+
+        if (selectedRegion === 'all') {
+          const monumentsResponse = await getMonuments();
+          const sitesResponse = await getTouristSites();
+          monumentsData = monumentsResponse.monuments || [];
+          sitesData = sitesResponse.data || [];
+        } else if (selectedCity === 'all') {
+          monumentsData = await getMonumentsByRegion(selectedRegion);
+          sitesData = await getTouristSitesByRegion(selectedRegion);
+        } else {
+          monumentsData = await getMonumentsByCity(selectedCity);
+          sitesData = await getTouristSitesByRegion(selectedRegion);
         }
+
+        const processedMonuments = Array.isArray(monumentsData) ? monumentsData : [];
+        const processedSites = Array.isArray(sitesData) ? sitesData : [];
+
+        setMonuments(processedMonuments);
+        setTouristSites(processedSites);
+
+        const markers = [
+          ...processedMonuments.map(m => ({
+            id: m.id,
+            type: 'monument',
+            position: { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) },
+            title: m.name
+          })),
+          ...processedSites.map(s => ({
+            id: s.id,
+            type: 'tourist-site',
+            position: { lat: parseFloat(s.latitude), lng: parseFloat(s.longitude) },
+            title: s.name
+          }))
+        ].filter(marker => 
+          !isNaN(marker.position.lat) && 
+          !isNaN(marker.position.lng) &&
+          marker.position.lat !== 0 &&
+          marker.position.lng !== 0
+        );
+
+        setMapMarkers(markers);
+        setShowResults(true);
+
+        if (selectedCity !== 'all' && processedMonuments.length > 0) {
+          const firstLocation = processedMonuments[0];
+          setMapCenter({
+            lat: parseFloat(firstLocation.latitude),
+            lng: parseFloat(firstLocation.longitude)
+          });
+          setMapZoom(12);
+        } else if (selectedRegion !== 'all' && processedMonuments.length > 0) {
+          const firstLocation = processedMonuments[0];
+          setMapCenter({
+            lat: parseFloat(firstLocation.latitude),
+            lng: parseFloat(firstLocation.longitude)
+          });
+          setMapZoom(8);
+        } else {
+          setMapCenter({ lat: 31.7917, lng: -7.0926 });
+          setMapZoom(6);
+        }
+      } catch (error) {
+        console.error('Error fetching locations:', error);
       }
     };
 
     fetchLocations();
-  }, [selectedRegion]);
+  }, [selectedRegion, selectedCity]);
 
   const handleMarkerClick = (type, id) => {
     setSelectedMarker({ type, id });
@@ -324,22 +389,13 @@ function Explore() {
         mb: 4
       }}>
         <FormControl fullWidth>
-          <InputLabel
-            sx={{
-              color: 'primary.main',
-              '&.Mui-focused': {
-                color: 'primary.main',
-              }
-            }}
-          >
-            Select Region
-          </InputLabel>
+          <InputLabel>Select Region</InputLabel>
           <Select
             value={selectedRegion}
             label="Select Region"
             onChange={(e) => {
               setSelectedRegion(e.target.value);
-              setSelectedCity('');
+              setSelectedCity('all');
               setShowResults(false);
             }}
             sx={{
@@ -356,6 +412,7 @@ function Explore() {
               },
             }}
           >
+            <MenuItem value="all">All Regions</MenuItem>
             {regions.map((region) => (
               <MenuItem key={region.id} value={region.id}>
                 {region.name}
@@ -369,25 +426,14 @@ function Explore() {
           <Select
             value={selectedCity}
             label="Select City"
-            onChange={(e) => {
-              setSelectedCity(e.target.value);
-              if (e.target.value) {
-                Promise.all([
-                  getMonumentsByCity(e.target.value),
-                  getTouristSitesByRegion(selectedRegion)
-                ]).then(([monumentsData, sitesData]) => {
-                  setMonuments(monumentsData || []);
-                  setTouristSites(sitesData || []);
-                  setShowResults(true);
-                });
-              }
-            }}
-            disabled={!selectedRegion}
+            onChange={(e) => setSelectedCity(e.target.value)}
+            disabled={selectedRegion === 'all'}
             sx={{
               borderRadius: 2,
               backgroundColor: 'white',
             }}
           >
+            <MenuItem value="all">All Cities</MenuItem>
             {cities.map((city) => (
               <MenuItem key={city.id} value={city.id}>
                 {city.name}
@@ -395,16 +441,31 @@ function Explore() {
             ))}
           </Select>
         </FormControl>
+
+        <Button
+          variant="outlined"
+          onClick={() => setShowMap(!showMap)}
+          startIcon={showMap ? <MapIcon /> : <MapIcon />}
+          sx={{
+            alignSelf: 'flex-start',
+            borderRadius: 2,
+            px: 3
+          }}
+        >
+          {showMap ? 'Hide Map' : 'Show Map'}
+        </Button>
       </Box>
 
-      {selectedRegion && (
-        <RegionMap
-          monuments={monuments}
-          touristSites={touristSites}
-          selectedCity={selectedCity}
-          onMarkerClick={handleMarkerClick}
-          selectedMarker={selectedMarker}
-        />
+      {showMap && (
+        <Box sx={{ mb: 4, height: 400, borderRadius: 2, overflow: 'hidden' }}>
+          <RegionMap
+            markers={mapMarkers}
+            center={mapCenter}
+            zoom={mapZoom}
+            onMarkerClick={handleMarkerClick}
+            selectedMarker={selectedMarker}
+          />
+        </Box>
       )}
 
       {renderResults()}
