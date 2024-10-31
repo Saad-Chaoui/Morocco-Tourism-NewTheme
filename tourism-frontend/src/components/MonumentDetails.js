@@ -186,233 +186,251 @@ function MonumentDetails() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2 }}>
+    <Container maxWidth="lg" sx={{ p: 0, flexDirection: 'column', pb: { xs: '80px', sm: 2 } }}>
       {/* Header */}
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        mb: 2,
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
-        p: 2,
-        borderRadius: 1
-      }}>
-        <IconButton color="inherit" onClick={() => navigate(-1)}>
+      <Box 
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          bgcolor: 'background.paper',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          mb: 2,
+          px: 2,
+          py: 1.5,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
+        }}
+      >
+        <IconButton 
+          onClick={() => navigate(-1)}
+          sx={{ 
+            color: 'primary.main',
+            p: 1
+          }}
+        >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">Back to Monuments</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+          Monument Details
+        </Typography>
       </Box>
 
-      <Grid container spacing={3}>
-        {/* Left Column */}
-        <Grid item xs={12} md={8}>
-          {/* Title */}
-          <Typography variant="h4" gutterBottom color="primary.main" paddingBottom={1}>
-            {monument.name}
-          </Typography>
+      {/* Content Container */}
+      <Box sx={{ px: 2 }}>
+        <Grid container spacing={3}>
+          {/* Left Column */}
+          <Grid item xs={12} md={8}>
+            {/* Title */}
+            <Typography variant="h4" gutterBottom color="primary.main" paddingBottom={1}>
+              {monument.name}
+            </Typography>
 
-          {/* Main Image */}
-          {monument.images && monument.images.length > 0 && (
-            <Box
-              sx={{
-                mb: 3,
-                cursor: monument.images.length > 1 ? 'pointer' : 'default',
-                position: 'relative'
-              }}
-              onClick={handleImageClick}
-            >
-              <img
-                src={monument.images[currentImageIndex]}
-                alt={monument.name}
-                style={{
-                  width: '100%',
-                  height: '400px',
-                  objectFit: 'cover',
-                  borderRadius: '8px'
+            {/* Main Image */}
+            {monument.images && monument.images.length > 0 && (
+              <Box
+                sx={{
+                  mb: 3,
+                  cursor: monument.images.length > 1 ? 'pointer' : 'default',
+                  position: 'relative'
                 }}
-              />
-              {monument.images.length > 1 && (
-                <Typography
-                  sx={{
-                    position: 'absolute',
-                    bottom: 8,
-                    right: 8,
-                    bgcolor: 'rgba(0,0,0,0.6)',
-                    color: 'white',
-                    px: 1,
-                    borderRadius: 1,
+                onClick={handleImageClick}
+              >
+                <img
+                  src={monument.images[currentImageIndex]}
+                  alt={monument.name}
+                  style={{
+                    width: '100%',
+                    height: '400px',
+                    objectFit: 'cover',
+                    borderRadius: '8px'
                   }}
-                >
-                  {currentImageIndex + 1}/{monument.images.length}
-                </Typography>
-              )}
-            </Box>
-          )}
+                />
+                {monument.images.length > 1 && (
+                  <Typography
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      right: 8,
+                      bgcolor: 'rgba(0,0,0,0.6)',
+                      color: 'white',
+                      px: 1,
+                      borderRadius: 1,
+                    }}
+                  >
+                    {currentImageIndex + 1}/{monument.images.length}
+                  </Typography>
+                )}
+              </Box>
+            )}
 
-          {/* Description */}
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="primary.main">
-                About
-              </Typography>
-              <Typography variant="body1" paragraph>
-                {monument.description}
-              </Typography>
-              {monument.historical_significance && (
-                <Typography variant="body1">
-                  <HistoryIcon sx={{ mr: 1, verticalAlign: 'middle' }} color="primary" />
-                  {monument.historical_significance}
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Video */}
-          {monument.video && (
+            {/* Description */}
             <Card sx={{ mb: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom color="primary.main">
-                  Video Tour
+                  About
                 </Typography>
-                <Box sx={{
-                  position: 'relative',
-                  paddingBottom: monument.video.includes('tiktok.com') ? '177.77%' : '56.25%', // Adjust aspect ratio for TikTok
-                  height: 0,
-                  overflow: 'hidden',
-                  marginTop: 2,
-                  borderRadius: 1,
-                  maxWidth: monument.video.includes('tiktok.com') ? '325px' : '100%', // Adjust width for TikTok
-                  margin: monument.video.includes('tiktok.com') ? '0 auto' : '0', // Center TikTok videos
-                }}>
-                  <iframe
-                    src={getEmbedUrl(monument.video)}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '8px'
-                    }}
-                    title="Video tour"
-                    allowFullScreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    {...(monument.video.includes('tiktok.com') ? {
-                      'allow-scripts': true,
-                      'allow-same-origin': true,
-                    } : {})}
-                  />
+                <Typography variant="body1" paragraph>
+                  {monument.description}
+                </Typography>
+                {monument.historical_significance && (
+                  <Typography variant="body1">
+                    <HistoryIcon sx={{ mr: 1, verticalAlign: 'middle' }} color="primary" />
+                    {monument.historical_significance}
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Video */}
+            {monument.video && (
+              <Card sx={{ mb: 3 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom color="primary.main">
+                    Video Tour
+                  </Typography>
+                  <Box sx={{
+                    position: 'relative',
+                    paddingBottom: monument.video.includes('tiktok.com') ? '177.77%' : '56.25%', // Adjust aspect ratio for TikTok
+                    height: 0,
+                    overflow: 'hidden',
+                    marginTop: 2,
+                    borderRadius: 1,
+                    maxWidth: monument.video.includes('tiktok.com') ? '325px' : '100%', // Adjust width for TikTok
+                    margin: monument.video.includes('tiktok.com') ? '0 auto' : '0', // Center TikTok videos
+                  }}>
+                    <iframe
+                      src={getEmbedUrl(monument.video)}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '8px'
+                      }}
+                      title="Video tour"
+                      allowFullScreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      {...(monument.video.includes('tiktok.com') ? {
+                        'allow-scripts': true,
+                        'allow-same-origin': true,
+                      } : {})}
+                    />
+                  </Box>
+                </CardContent>
+              </Card>
+            )}
+          </Grid>
+
+          {/* Right Column */}
+          <Grid item xs={12} md={4}>
+            {/* Visit Information */}
+            <Card sx={{ mb: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom color="primary.main">
+                  Visit Information
+                </Typography>
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationIcon color="primary" />
+                    <Typography>
+                      <MuiLink
+                        component={Link}
+                        to={`/city/${monument.city_id}`}
+                        sx={{
+                          textDecoration: 'none',
+                          '&:hover': {
+                            textDecoration: 'underline'
+                          }
+                        }}
+                      >
+                        {monument.city_name}
+                      </MuiLink>
+                      , {monument.region_name}
+                    </Typography>
+                  </Box>
+
+                  {monument.opening_hours && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <AccessTimeIcon color="primary" />
+                      <Typography>
+                        {monument.opening_hours}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <AttachMoneyIcon color="primary" />
+                    <Typography>
+                      Entry Fee: {monument.entry_fee === 0 ? 'Free' : `${monument.entry_fee} MAD`}
+                    </Typography>
+                  </Box>
+
+                  {monument.creation_date && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <CalendarIcon color="primary" />
+                      <Typography>
+                        Built in: {new Date(monument.creation_date).getFullYear()}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {monument.nearest_cities && Array.isArray(monument.nearest_cities) && monument.nearest_cities.length > 0 && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <LocationIcon color="primary" />
+                      <Typography component="span">
+                        Near: {monument.nearest_cities.map((city, index) => {
+                          // Handle both string and object formats
+                          const cityName = typeof city === 'string' ? city : city.name;
+                          return (
+                            <React.Fragment key={index}>
+                              {index > 0 && ', '}
+                              <MuiLink
+                                component={Link}
+                                to={`/cities/search/${encodeURIComponent(cityName)}`}
+                                sx={{
+                                  textDecoration: 'none',
+                                  '&:hover': {
+                                    textDecoration: 'underline'
+                                  }
+                                }}
+                              >
+                                {cityName}
+                              </MuiLink>
+                            </React.Fragment>
+                          );
+                        })}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {monument.status && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      {getStatusIcon(monument.status)}
+                      <Typography>
+                        Status: {monument.status.replace('_', ' ')}
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               </CardContent>
             </Card>
-          )}
+
+            {/* Map */}
+            {monument && (
+              <MapSection
+                latitude={parseFloat(monument.latitude)}
+                longitude={parseFloat(monument.longitude)}
+                name={monument.name}
+              />
+            )}
+          </Grid>
         </Grid>
-
-        {/* Right Column */}
-        <Grid item xs={12} md={4}>
-          {/* Visit Information */}
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="primary.main">
-                Visit Information
-              </Typography>
-
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <LocationIcon color="primary" />
-                  <Typography>
-                    <MuiLink
-                      component={Link}
-                      to={`/city/${monument.city_id}`}
-                      sx={{
-                        textDecoration: 'none',
-                        '&:hover': {
-                          textDecoration: 'underline'
-                        }
-                      }}
-                    >
-                      {monument.city_name}
-                    </MuiLink>
-                    , {monument.region_name}
-                  </Typography>
-                </Box>
-
-                {monument.opening_hours && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <AccessTimeIcon color="primary" />
-                    <Typography>
-                      {monument.opening_hours}
-                    </Typography>
-                  </Box>
-                )}
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <AttachMoneyIcon color="primary" />
-                  <Typography>
-                    Entry Fee: {monument.entry_fee === 0 ? 'Free' : `${monument.entry_fee} MAD`}
-                  </Typography>
-                </Box>
-
-                {monument.creation_date && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CalendarIcon color="primary" />
-                    <Typography>
-                      Built in: {new Date(monument.creation_date).getFullYear()}
-                    </Typography>
-                  </Box>
-                )}
-
-                {monument.nearest_cities && Array.isArray(monument.nearest_cities) && monument.nearest_cities.length > 0 && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <LocationIcon color="primary" />
-                    <Typography component="span">
-                      Near: {monument.nearest_cities.map((city, index) => {
-                        // Handle both string and object formats
-                        const cityName = typeof city === 'string' ? city : city.name;
-                        return (
-                          <React.Fragment key={index}>
-                            {index > 0 && ', '}
-                            <MuiLink
-                              component={Link}
-                              to={`/cities/search/${encodeURIComponent(cityName)}`}
-                              sx={{
-                                textDecoration: 'none',
-                                '&:hover': {
-                                  textDecoration: 'underline'
-                                }
-                              }}
-                            >
-                              {cityName}
-                            </MuiLink>
-                          </React.Fragment>
-                        );
-                      })}
-                    </Typography>
-                  </Box>
-                )}
-
-                {monument.status && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {getStatusIcon(monument.status)}
-                    <Typography>
-                      Status: {monument.status.replace('_', ' ')}
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
-
-          {/* Map */}
-          {monument && (
-            <MapSection
-              latitude={parseFloat(monument.latitude)}
-              longitude={parseFloat(monument.longitude)}
-              name={monument.name}
-            />
-          )}
-        </Grid>
-      </Grid>
+      </Box>
     </Container>
   );
 }

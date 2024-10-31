@@ -11,16 +11,20 @@ function Layout({ children }) {
 
   return (
     <Box sx={{
-      minHeight: '100vh',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      minHeight: '100vh',
+      bgcolor: 'background.default'
     }}>
       {!isMobile && <Header />}
-      <Box component="main" sx={{
-        flexGrow: 1,
-        pt: 0,
-        pb: isMobile ? 7 : 3
-      }}>
+      <Box 
+        component="main" 
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         {children}
       </Box>
       <ScrollToTop />

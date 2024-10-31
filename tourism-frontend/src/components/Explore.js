@@ -97,7 +97,7 @@ function Explore() {
     const displayedItems = showAll ? items : items.slice(0, ITEMS_TO_SHOW);
 
     return (
-      <Box sx={{ my: 3 }}>
+      <Box sx={{ my: 3, flexDirection: 'column', pb: { xs: '35px', sm: 0 } }}>
         <Typography
           variant="h5"
           sx={{

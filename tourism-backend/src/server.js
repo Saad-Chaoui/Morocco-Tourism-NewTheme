@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const regionsRouter = require('./routes/regions');
 const citiesRouter = require('./routes/cities');
 const monumentsRouter = require('./routes/monuments');
@@ -9,6 +10,19 @@ const imagesRouter = require('./routes/images');
 const path = require('path');
 
 const app = express();
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "http://localhost:5002"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 
 app.use(cors({
   origin: 'http://localhost:3000', // or your frontend URL

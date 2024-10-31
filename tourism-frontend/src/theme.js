@@ -31,9 +31,10 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '2.5rem',
+      fontSize: '4rem',
+      fontWeight: 700,
       '@media (max-width:600px)': {
-        fontSize: '2rem',
+        fontSize: '2.5rem',
       },
     },
     h2: {

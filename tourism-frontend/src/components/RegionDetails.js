@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Typography, Box, Grid, Card, CardContent, Button,
   ListItem, ListItemText, Divider, Rating,
-  CircularProgress, Container
+  CircularProgress, Container, IconButton
 } from '@mui/material';
 import {
   LocationCity as CityIcon,
@@ -27,6 +27,7 @@ function RegionDetails() {
   const [monumentsShown, setMonumentsShown] = useState(INITIAL_ITEMS_TO_SHOW);
   const [touristSitesShown, setTouristSitesShown] = useState(INITIAL_ITEMS_TO_SHOW);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRegionDetails = async () => {
@@ -97,166 +98,174 @@ function RegionDetails() {
   };
 
   return (
-    <Container maxWidth="lg">
-      <Box
+    <Container maxWidth="lg" sx={{ p: 0, flexDirection: 'column', pb: { xs: '80px', sm: 2 } }}>
+      {/* Header */}
+      <Box 
         sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          bgcolor: 'background.paper',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          mb: 2,
+          px: 2,
+          py: 1.5,
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
-          mb: 4,
-          mt: { xs: 2, md: 4 }
+          gap: 1
         }}
       >
-        <img
-          src="/images/morocco-flag.png"
-          alt="Morocco Flag"
-          style={{
-            height: '24px',
-            width: 'auto',
-            borderRadius: '2px'
-          }}
-        />
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 600,
-            color: 'primary.main'
+        <IconButton 
+          onClick={() => navigate(-1)}
+          sx={{ 
+            color: 'primary.main',
+            p: 1
           }}
         >
-          {region.name} Region
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+          Region Details
         </Typography>
       </Box>
-      <Button
-        component={Link}
-        to="/regions"
-        startIcon={<ArrowBackIcon />}
-        sx={{
-          mb: 3,
-          color: 'primary.main',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            color: 'white',
-          },
-        }}
-      >
-        Back to Regions
-      </Button>
 
-      <Card elevation={3} sx={{ mb: 4 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {region.name}
+      {/* Content Container */}
+      <Box sx={{ px: 2 }}>
+        {/* Region header with flag */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+          <img
+            src="/images/morocco-flag.png"
+            alt="Morocco Flag"
+            style={{
+              height: '24px',
+              width: 'auto',
+              borderRadius: '2px'
+            }}
+          />
+          <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main' }}>
+            {region.name} Region
           </Typography>
-          <Box display="flex" alignItems="center" mb={2}>
-            <Rating value={region.tourism_rating} readOnly precision={0.5} />
-            <Typography variant="body2" color="text.secondary" ml={1}>
-              ({region.tourism_rating})
+        </Box>
+
+
+
+        <Card elevation={3} sx={{ mb: 4 }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h4" component="h1" gutterBottom>
+              {region.name}
             </Typography>
-          </Box>
-          <Typography variant="body1" paragraph>
-            {showFullDescription ? region.description : `${region.description.slice(0, 200)}...`}
-          </Typography>
-          <Button
-            onClick={() => setShowFullDescription(!showFullDescription)}
-            size="small"
-            color="primary"
-          >
-            {showFullDescription ? 'Show Less' : 'Read More'}
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Grid container spacing={4}>
-        {/* Cities Section */}
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                <CityIcon sx={{ mr: 1 }} /> Cities in {region.name}
+            <Box display="flex" alignItems="center" mb={2}>
+              <Rating value={region.tourism_rating} readOnly precision={0.5} />
+              <Typography variant="body2" color="text.secondary" ml={1}>
+                ({region.tourism_rating})
               </Typography>
-              {renderList(cities, citiesShown, (city) => (
-                <React.Fragment key={city.id}>
-                  <ListItem
-                    component={Link}
-                    to={`/city/${city.id}`}
-                    sx={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    <ListItemText
-                      primary={city.name}
-                      secondary={
-                        <Box display="flex" alignItems="center">
-                          <Rating
-                            value={Number(city.tourism_rating) || 0}
-                            readOnly
-                            size="small"
-                            precision={0.5}
-                          />
-                        </Box>
-                      }
-                    />
-                  </ListItem>
-                  <Divider />
-                </React.Fragment>
-              ))}
-              {renderViewMoreButton(cities, citiesShown, setCitiesShown)}
-            </CardContent>
-          </Card>
-        </Grid>
+            </Box>
+            <Typography variant="body1" paragraph>
+              {showFullDescription ? region.description : `${region.description.slice(0, 200)}...`}
+            </Typography>
+            <Button
+              onClick={() => setShowFullDescription(!showFullDescription)}
+              size="small"
+              color="primary"
+            >
+              {showFullDescription ? 'Show Less' : 'Read More'}
+            </Button>
+          </CardContent>
+        </Card>
 
-        {/* Monuments Section */}
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountBalanceIcon sx={{ mr: 1 }} /> Monuments in {region.name}
-              </Typography>
-              {renderList(monuments, monumentsShown, (monument) => (
-                <React.Fragment key={monument.id}>
-                  <ListItem
-                    component={Link}
-                    to={`/monument/${monument.id}`}
-                    sx={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    <ListItemText
-                      primary={monument.name}
-                      secondary={monument.description.slice(0, 50) + '...'}
-                    />
-                  </ListItem>
-                  <Divider />
-                </React.Fragment>
-              ))}
-              {renderViewMoreButton(monuments, monumentsShown, setMonumentsShown)}
-            </CardContent>
-          </Card>
-        </Grid>
+        <Grid container spacing={4}>
+          {/* Cities Section */}
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                  <CityIcon sx={{ mr: 1 }} /> Cities in {region.name}
+                </Typography>
+                {renderList(cities, citiesShown, (city) => (
+                  <React.Fragment key={city.id}>
+                    <ListItem
+                      component={Link}
+                      to={`/city/${city.id}`}
+                      sx={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <ListItemText
+                        primary={city.name}
+                        secondary={
+                          <Box display="flex" alignItems="center">
+                            <Rating
+                              value={Number(city.tourism_rating) || 0}
+                              readOnly
+                              size="small"
+                              precision={0.5}
+                            />
+                          </Box>
+                        }
+                      />
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+                {renderViewMoreButton(cities, citiesShown, setCitiesShown)}
+              </CardContent>
+            </Card>
+          </Grid>
 
-        {/* Tourist Sites Section */}
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                <TouristSiteIcon sx={{ mr: 1 }} /> Tourist Sites in {region.name}
-              </Typography>
-              {renderList(touristSites, touristSitesShown, (site) => (
-                <React.Fragment key={site.id}>
-                  <ListItem
-                    component={Link}
-                    to={`/tourist-site/${site.id}`}
-                    sx={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    <ListItemText
-                      primary={site.name}
-                      secondary={site.type}
-                    />
-                  </ListItem>
-                  <Divider />
-                </React.Fragment>
-              ))}
-              {renderViewMoreButton(touristSites, touristSitesShown, setTouristSitesShown)}
-            </CardContent>
-          </Card>
+          {/* Monuments Section */}
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AccountBalanceIcon sx={{ mr: 1 }} /> Monuments in {region.name}
+                </Typography>
+                {renderList(monuments, monumentsShown, (monument) => (
+                  <React.Fragment key={monument.id}>
+                    <ListItem
+                      component={Link}
+                      to={`/monument/${monument.id}`}
+                      sx={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <ListItemText
+                        primary={monument.name}
+                        secondary={monument.description.slice(0, 50) + '...'}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+                {renderViewMoreButton(monuments, monumentsShown, setMonumentsShown)}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Tourist Sites Section */}
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TouristSiteIcon sx={{ mr: 1 }} /> Tourist Sites in {region.name}
+                </Typography>
+                {renderList(touristSites, touristSitesShown, (site) => (
+                  <React.Fragment key={site.id}>
+                    <ListItem
+                      component={Link}
+                      to={`/tourist-site/${site.id}`}
+                      sx={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <ListItemText
+                        primary={site.name}
+                        secondary={site.type}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+                {renderViewMoreButton(touristSites, touristSitesShown, setTouristSitesShown)}
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Container>
   );
 }

@@ -317,319 +317,340 @@ function AccommodationDetails() {
   if (!accommodation) return null;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+    <Container maxWidth="lg" sx={{ p: 0, flexDirection: 'column', pb: { xs: '80px', sm: 2 } }}>
+      <Box 
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          bgcolor: 'background.paper',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          mb: 2,
+          px: 2,
+          py: 1.5,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
+        }}
+      >
         <IconButton 
-          onClick={() => navigate(-1)} 
-          sx={{ mr: 2, color: 'primary.main' }}
-          aria-label="go back"
+          onClick={() => navigate(-1)}
+          sx={{ 
+            color: 'primary.main',
+            p: 1
+          }}
         >
           <ArrowBack />
         </IconButton>
-        <Typography variant="h4" component="h1" color="primary">
-          {accommodation?.name || <Skeleton width={300} />}
+        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+          Accommodation Details
         </Typography>
       </Box>
 
-      {accommodation?.media && accommodation.media.length > 0 && (
-        <Box sx={{ mb: 3, position: 'relative' }}>
-          <Box 
-            className="main-image-container"
-            sx={{
-              height: { xs: '250px', sm: '400px' },
-              position: 'relative',
-              overflow: 'hidden',
-              borderRadius: 2,
-            }}
-          >
-            <img
-              src={accommodation.media[currentImageIndex].url}
-              alt={`${accommodation.name} - ${currentImageIndex + 1}`}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover'
-              }}
-            />
-            
-            {accommodation.media.length > 1 && (
-              <>
-                <IconButton
-                  onClick={handlePrevImage}
-                  className="nav-button prev"
-                  sx={{
-                    position: 'absolute',
-                    left: 8,
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: 'white',
-                    bgcolor: 'rgba(0, 0, 0, 0.5)',
-                    '&:hover': { 
-                      bgcolor: 'rgba(0, 0, 0, 0.7)',
-                    },
-                    zIndex: 2
-                  }}
-                >
-                  <NavigateBefore />
-                </IconButton>
-                <IconButton
-                  onClick={handleNextImage}
-                  className="nav-button next"
-                  sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: 'white',
-                    bgcolor: 'rgba(0, 0, 0, 0.5)',
-                    '&:hover': { 
-                      bgcolor: 'rgba(0, 0, 0, 0.7)',
-                    },
-                    zIndex: 2
-                  }}
-                >
-                  <NavigateNext />
-                </IconButton>
-              </>
-            )}
+      <Box sx={{ px: 2 }}>
+        <Typography variant="h4" component="h1" color="primary" sx={{ mb: 3 }}>
+          {accommodation?.name || <Skeleton width={300} />}
+        </Typography>
 
-            <Box
-              className="image-counter"
+        {accommodation?.media && accommodation.media.length > 0 && (
+          <Box sx={{ mb: 3, position: 'relative' }}>
+            <Box 
+              className="main-image-container"
               sx={{
-                position: 'absolute',
-                bottom: 16,
-                right: 16,
-                bgcolor: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                px: 2,
-                py: 1,
-                borderRadius: 1,
-                fontSize: '0.875rem',
-                zIndex: 2
+                height: { xs: '250px', sm: '400px' },
+                position: 'relative',
+                overflow: 'hidden',
+                borderRadius: 2,
               }}
             >
-              {currentImageIndex + 1} / {accommodation.media.length}
-            </Box>
-          </Box>
-
-          {accommodation.media.length > 1 && (
-            <ImageList
-              sx={{
-                mt: 1,
-                display: { xs: 'none', sm: 'grid' },
-                gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr)) !important',
-                gap: '8px !important'
-              }}
-              rowHeight={80}
-              gap={8}
-            >
-              {accommodation.media.map((image, index) => (
-                <ImageListItem 
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  sx={{ 
-                    cursor: 'pointer',
-                    opacity: currentImageIndex === index ? 1 : 0.7,
-                    transition: 'opacity 0.3s ease',
-                    '&:hover': {
-                      opacity: 1
-                    }
-                  }}
-                >
-                  <img
-                    src={image.url}
-                    alt={`${accommodation.name} - ${index + 1}`}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover'
+              <img
+                src={accommodation.media[currentImageIndex].url}
+                alt={`${accommodation.name} - ${currentImageIndex + 1}`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+              
+              {accommodation.media.length > 1 && (
+                <>
+                  <IconButton
+                    onClick={handlePrevImage}
+                    className="nav-button prev"
+                    sx={{
+                      position: 'absolute',
+                      left: 8,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: 'white',
+                      bgcolor: 'rgba(0, 0, 0, 0.5)',
+                      '&:hover': { 
+                        bgcolor: 'rgba(0, 0, 0, 0.7)',
+                      },
+                      zIndex: 2
                     }}
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList>
-          )}
-        </Box>
-      )}
+                  >
+                    <NavigateBefore />
+                  </IconButton>
+                  <IconButton
+                    onClick={handleNextImage}
+                    className="nav-button next"
+                    sx={{
+                      position: 'absolute',
+                      right: 8,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: 'white',
+                      bgcolor: 'rgba(0, 0, 0, 0.5)',
+                      '&:hover': { 
+                        bgcolor: 'rgba(0, 0, 0, 0.7)',
+                      },
+                      zIndex: 2
+                    }}
+                  >
+                    <NavigateNext />
+                  </IconButton>
+                </>
+              )}
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          <Card>
-            <CardContent>
-              <Box sx={{ mb: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Rating value={accommodation?.rating || 0} precision={0.5} readOnly />
-                  {renderPriceRange(accommodation?.price_range)}
-                </Box>
-                
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Hotel color="primary" />
-                    <Typography>{accommodation?.type}</Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <LocationOn color="primary" />
-                    <Typography>
-                      {accommodation?.city_name}, {accommodation?.region_name}
-                    </Typography>
-                  </Box>
-                </Box>
+              <Box
+                className="image-counter"
+                sx={{
+                  position: 'absolute',
+                  bottom: 16,
+                  right: 16,
+                  bgcolor: 'rgba(0, 0, 0, 0.6)',
+                  color: 'white',
+                  px: 2,
+                  py: 1,
+                  borderRadius: 1,
+                  fontSize: '0.875rem',
+                  zIndex: 2
+                }}
+              >
+                {currentImageIndex + 1} / {accommodation.media.length}
               </Box>
+            </Box>
 
-              <Typography variant="body1" paragraph>
-                {accommodation.description}
-              </Typography>
+            {accommodation.media.length > 1 && (
+              <ImageList
+                sx={{
+                  mt: 1,
+                  display: { xs: 'none', sm: 'grid' },
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr)) !important',
+                  gap: '8px !important'
+                }}
+                rowHeight={80}
+                gap={8}
+              >
+                {accommodation.media.map((image, index) => (
+                  <ImageListItem 
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    sx={{ 
+                      cursor: 'pointer',
+                      opacity: currentImageIndex === index ? 1 : 0.7,
+                      transition: 'opacity 0.3s ease',
+                      '&:hover': {
+                        opacity: 1
+                      }
+                    }}
+                  >
+                    <img
+                      src={image.url}
+                      alt={`${accommodation.name} - ${index + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+            )}
+          </Box>
+        )}
 
-              <Divider sx={{ my: 3 }} />
-
-              {accommodation && accommodation.details && (
-                <Box sx={{ mt: 3 }}>
-                  <Typography variant="h6" gutterBottom color="primary" sx={{ mb: 2 }}>
-                    Amenities
-                  </Typography>
-                  <Grid container spacing={1}>
-                    {Object.entries(accommodation.details)
-                      .filter(([key, value]) => 
-                        (key.startsWith('has_') || key.startsWith('allows_')) && 
-                        value === 1 && 
-                        key !== 'has_id' && 
-                        key !== 'has_accommodation_id'
-                      )
-                      .map(([key], index) => {
-                        const amenityName = key
-                          .replace('has_', '')
-                          .replace('allows_', '')
-                          .split('_')
-                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                          .join(' ');
-                        return (
-                          <Grid item xs={6} sm={4} md={3} key={index}>
-                            <Box sx={{ 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              gap: 1,
-                              py: 0.75,
-                              px: 1,
-                              borderRadius: 1,
-                              transition: 'all 0.2s ease',
-                              '&:hover': {
-                                bgcolor: 'primary.light',
-                                color: 'white',
-                                '& .amenity-icon': {
-                                  color: 'white',
-                                },
-                                '& .amenity-text': {
-                                  color: 'white',
-                                }
-                              }
-                            }}>
-                              <Box 
-                                className="amenity-icon"
-                                sx={{
-                                  color: 'primary.main',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  transition: 'color 0.2s ease',
-                                  '& svg': {
-                                    fontSize: '1.2rem'
-                                  }
-                                }}
-                              >
-                                {getAmenityIcon(amenityName)}
-                              </Box>
-                              <Typography 
-                                variant="body2"
-                                className="amenity-text"
-                                sx={{ 
-                                  fontSize: '0.875rem',
-                                  transition: 'color 0.2s ease'
-                                }}
-                              >
-                                {amenityName}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                        );
-                      })}
-                  </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardContent>
+                <Box sx={{ mb: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <Rating value={accommodation?.rating || 0} precision={0.5} readOnly />
+                    {renderPriceRange(accommodation?.price_range)}
+                  </Box>
+                  
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Hotel color="primary" />
+                      <Typography>{accommodation?.type}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <LocationOn color="primary" />
+                      <Typography>
+                        {accommodation?.city_name}, {accommodation?.region_name}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Box>
-              )}
 
-              <Divider sx={{ my: 3 }} />
-
-              <Typography variant="h6" gutterBottom color="primary">
-                Contact Information
-              </Typography>
-              <Grid container spacing={2}>
-                {accommodation.phone && (
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Phone color="primary" />
-                      <Typography variant="body2">{accommodation.phone}</Typography>
-                    </Box>
-                  </Grid>
-                )}
-                {accommodation.email && (
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Email color="primary" />
-                      <Typography variant="body2">{accommodation.email}</Typography>
-                    </Box>
-                  </Grid>
-                )}
-                {accommodation.website && (
-                  <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Language color="primary" />
-                      <Button
-                        href={accommodation.website.startsWith('http') ? accommodation.website : `https://${accommodation.website}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        color="primary"
-                      >
-                        Visit Website
-                      </Button>
-                    </Box>
-                  </Grid>
-                )}
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="primary">
-                Location
-              </Typography>
-              {accommodation?.latitude && accommodation?.longitude ? (
-                <Box sx={{ height: 300, mb: 2 }}>
-                  <MapView
-                    center={[parseFloat(accommodation.latitude), parseFloat(accommodation.longitude)]}
-                    zoom={15}
-                    accommodations={[{
-                      id: accommodation.id,
-                      name: accommodation.name,
-                      type: accommodation.type,
-                      city_name: accommodation.city_name,
-                      rating: accommodation.rating,
-                      latitude: parseFloat(accommodation.latitude),
-                      longitude: parseFloat(accommodation.longitude)
-                    }]}
-                  />
-                </Box>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  Location information not available
+                <Typography variant="body1" paragraph>
+                  {accommodation.description}
                 </Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
 
-      
+                <Divider sx={{ my: 3 }} />
+
+                {accommodation && accommodation.details && (
+                  <Box sx={{ mt: 3 }}>
+                    <Typography variant="h6" gutterBottom color="primary" sx={{ mb: 2 }}>
+                      Amenities
+                    </Typography>
+                    <Grid container spacing={1}>
+                      {Object.entries(accommodation.details)
+                        .filter(([key, value]) => 
+                          (key.startsWith('has_') || key.startsWith('allows_')) && 
+                          value === 1 && 
+                          key !== 'has_id' && 
+                          key !== 'has_accommodation_id'
+                        )
+                        .map(([key], index) => {
+                          const amenityName = key
+                            .replace('has_', '')
+                            .replace('allows_', '')
+                            .split('_')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                          return (
+                            <Grid item xs={6} sm={4} md={3} key={index}>
+                              <Box sx={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: 1,
+                                py: 0.75,
+                                px: 1,
+                                borderRadius: 1,
+                                transition: 'all 0.2s ease',
+                                '&:hover': {
+                                  bgcolor: 'primary.light',
+                                  color: 'white',
+                                  '& .amenity-icon': {
+                                    color: 'white',
+                                  },
+                                  '& .amenity-text': {
+                                    color: 'white',
+                                  }
+                                }
+                              }}>
+                                <Box 
+                                  className="amenity-icon"
+                                  sx={{
+                                    color: 'primary.main',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    transition: 'color 0.2s ease',
+                                    '& svg': {
+                                      fontSize: '1.2rem'
+                                    }
+                                  }}
+                                >
+                                  {getAmenityIcon(amenityName)}
+                                </Box>
+                                <Typography 
+                                  variant="body2"
+                                  className="amenity-text"
+                                  sx={{ 
+                                    fontSize: '0.875rem',
+                                    transition: 'color 0.2s ease'
+                                  }}
+                                >
+                                  {amenityName}
+                                </Typography>
+                              </Box>
+                            </Grid>
+                          );
+                        })}
+                    </Grid>
+                  </Box>
+                )}
+
+                <Divider sx={{ my: 3 }} />
+
+                <Typography variant="h6" gutterBottom color="primary">
+                  Contact Information
+                </Typography>
+                <Grid container spacing={2}>
+                  {accommodation.phone && (
+                    <Grid item xs={12} sm={6}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Phone color="primary" />
+                        <Typography variant="body2">{accommodation.phone}</Typography>
+                      </Box>
+                    </Grid>
+                  )}
+                  {accommodation.email && (
+                    <Grid item xs={12} sm={6}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Email color="primary" />
+                        <Typography variant="body2">{accommodation.email}</Typography>
+                      </Box>
+                    </Grid>
+                  )}
+                  {accommodation.website && (
+                    <Grid item xs={12}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Language color="primary" />
+                        <Button
+                          href={accommodation.website.startsWith('http') ? accommodation.website : `https://${accommodation.website}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          color="primary"
+                        >
+                          Visit Website
+                        </Button>
+                      </Box>
+                    </Grid>
+                  )}
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom color="primary">
+                  Location
+                </Typography>
+                {accommodation?.latitude && accommodation?.longitude ? (
+                  <Box sx={{ height: 300, mb: 2 }}>
+                    <MapView
+                      center={[parseFloat(accommodation.latitude), parseFloat(accommodation.longitude)]}
+                      zoom={15}
+                      accommodations={[{
+                        id: accommodation.id,
+                        name: accommodation.name,
+                        type: accommodation.type,
+                        city_name: accommodation.city_name,
+                        rating: accommodation.rating,
+                        latitude: parseFloat(accommodation.latitude),
+                        longitude: parseFloat(accommodation.longitude)
+                      }]}
+                    />
+                  </Box>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    Location information not available
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 }

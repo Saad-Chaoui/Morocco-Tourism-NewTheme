@@ -66,7 +66,7 @@ function TouristSiteList() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 4, flexDirection: 'column', pb: { xs: '30px', sm: 0 }}}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Tourist Sites
         </Typography>

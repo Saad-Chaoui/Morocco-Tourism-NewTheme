@@ -44,7 +44,7 @@ function CityList() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ mb: 4, flexDirection: 'column', pb: { xs: '20px', sm: 0 } }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Explore Cities
         </Typography>

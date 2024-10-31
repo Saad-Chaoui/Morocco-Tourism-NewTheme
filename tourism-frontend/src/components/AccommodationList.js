@@ -133,7 +133,7 @@ function AccommodationList() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4, flexDirection: 'column', pb: { xs: '65px', sm: 0 } }}>
       <Typography variant="h4" component="h1" gutterBottom color="primary">
         Accommodations
       </Typography>
