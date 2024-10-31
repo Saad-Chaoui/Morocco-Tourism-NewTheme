@@ -50,7 +50,46 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get accommodation by ID with specific details based on type
+// Add locations endpoint BEFORE the /:id route
+router.get('/locations/all', async (req, res) => {
+  try {
+    const type = req.query.type || '';
+    const search = req.query.search || '';
+
+    let query = `
+      SELECT a.id, a.name, a.type, a.latitude, a.longitude, 
+             c.name as city_name, r.name as region_name,
+             a.rating, a.price_range,
+             (SELECT url FROM accommodation_media WHERE accommodation_id = a.id AND is_primary = 1 LIMIT 1) as primary_image
+      FROM accommodations a
+      LEFT JOIN cities c ON a.city_id = c.id
+      LEFT JOIN regions r ON a.region_id = r.id
+      WHERE a.latitude IS NOT NULL AND a.longitude IS NOT NULL
+    `;
+    
+    const params = [];
+
+    if (search) {
+      query += ' AND (a.name LIKE ? OR c.name LIKE ? OR r.name LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
+
+    if (type) {
+      query += ' AND a.type = ?';
+      params.push(type);
+    }
+    
+    const [rows] = await db.query(query, params);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Error fetching accommodation locations', 
+      error: error.toString() 
+    });
+  }
+});
+
+// Get accommodation by ID route (and other existing routes)
 router.get('/:id', async (req, res) => {
   try {
     const [accommodations] = await db.query(
@@ -67,19 +106,46 @@ router.get('/:id', async (req, res) => {
     }
 
     const accommodation = accommodations[0];
+    let details = null;
 
     // Get type-specific details
-    let typeDetails = {};
-    switch (accommodation.type) {
-      case 'Hotel':
-        const [hotelDetails] = await db.query('SELECT * FROM hotels WHERE accommodation_id = ?', [req.params.id]);
-        typeDetails = hotelDetails[0];
+    switch (accommodation.type.toLowerCase()) {
+      case 'hotel':
+        const [hotelDetails] = await db.query(
+          'SELECT * FROM hotels WHERE accommodation_id = ?',
+          [req.params.id]
+        );
+        details = hotelDetails[0] || null;
         break;
-      case 'Riad':
-        const [riadDetails] = await db.query('SELECT * FROM riads WHERE accommodation_id = ?', [req.params.id]);
-        typeDetails = riadDetails[0];
+      case 'riad':
+        const [riadDetails] = await db.query(
+          'SELECT * FROM riads WHERE accommodation_id = ?',
+          [req.params.id]
+        );
+        details = riadDetails[0] || null;
         break;
-      // Add other cases for different types
+      case 'camping':
+        const [campingDetails] = await db.query(
+          'SELECT * FROM campings WHERE accommodation_id = ?',
+          [req.params.id]
+        );
+        details = campingDetails[0] || null;
+        break;
+      case 'auberge':
+        const [aubergeDetails] = await db.query(
+          'SELECT * FROM auberges WHERE accommodation_id = ?',
+          [req.params.id]
+        );
+        details = aubergeDetails[0] || null;
+        break;
+      case 'apartment':
+      case 'villa':
+        const [rentalDetails] = await db.query(
+          'SELECT * FROM rental_properties WHERE accommodation_id = ?',
+          [req.params.id]
+        );
+        details = rentalDetails[0] || null;
+        break;
     }
 
     // Get media
@@ -90,11 +156,15 @@ router.get('/:id', async (req, res) => {
 
     res.json({
       ...accommodation,
-      details: typeDetails,
+      details,
       media
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching accommodation', error: error.toString() });
+    console.error('Error in accommodation details:', error);
+    res.status(500).json({ 
+      message: 'Error fetching accommodation details',
+      error: error.message 
+    });
   }
 });
 

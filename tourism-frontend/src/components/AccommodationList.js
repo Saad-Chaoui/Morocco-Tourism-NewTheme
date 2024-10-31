@@ -19,7 +19,7 @@ import {
   Collapse
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { getAccommodations } from '../services/api';
+import { getAccommodations, getAccommodationLocations } from '../services/api';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HotelIcon from '@mui/icons-material/Hotel';
 import SearchIcon from '@mui/icons-material/Search';
@@ -31,6 +31,7 @@ import ArrowBack from '@mui/icons-material/ArrowBack';
 
 function AccommodationList() {
   const [accommodations, setAccommodations] = useState([]);
+  const [mapAccommodations, setMapAccommodations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -64,6 +65,18 @@ function AccommodationList() {
   useEffect(() => {
     fetchAccommodations();
   }, [page, searchTerm, selectedType]);
+
+  useEffect(() => {
+    const fetchMapLocations = async () => {
+      try {
+        const locations = await getAccommodationLocations(selectedType, searchTerm);
+        setMapAccommodations(locations);
+      } catch (err) {
+        console.error('Error fetching map locations:', err);
+      }
+    };
+    fetchMapLocations();
+  }, [selectedType, searchTerm]);
 
   const fetchAccommodations = async () => {
     try {
@@ -166,9 +179,9 @@ function AccommodationList() {
       <Collapse in={showMap}>
         <Card sx={{ mb: 4, height: 400 }}>
           <MapView
-            center={[31.7917, -7.0926]} // Morocco's center coordinates
+            center={[31.7917, -7.0926]}
             zoom={6}
-            accommodations={accommodations}
+            accommodations={mapAccommodations}
             onMarkerClick={handleMarkerClick}
             selectedAccommodation={selectedAccommodation}
           />

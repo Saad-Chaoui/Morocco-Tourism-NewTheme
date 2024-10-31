@@ -225,3 +225,18 @@ export const getAccommodationsByType = async (type) => {
     throw error;
   }
 };
+
+export const getAccommodationLocations = async (type = '', searchTerm = '') => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accommodations/locations/all`, {
+      params: { 
+        type,
+        search: searchTerm 
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching accommodation locations:', error);
+    throw error;
+  }
+};

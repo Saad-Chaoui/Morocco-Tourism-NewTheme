@@ -34,11 +34,80 @@ import {
   AttachMoney,
   Close as CloseIcon,
   NavigateBefore,
-  NavigateNext
+  NavigateNext,
+  LocalLaundryService,
+  FitnessCenter,
+  Spa,
+  RoomService,
+  BusinessCenter,
+  Kitchen,
+  Tv,
+  Balcony,
+  Coffee,
+  MeetingRoom,
+  LocalBar,
+  AccessTime,
+  Elevator,
+  Park,
+  Deck,
+  Weekend,
+  Dining as DiningIcon,
+  Lock,
+  Iron,
+  Dry,
+  Thermostat,
+  Microwave,
+  OutdoorGrill,
+  BeachAccess,
+  Landscape,
+  LocationCity,
+  AirportShuttle,
+  SupportAgent,
+  Luggage,
+  Pets,
+  Shower,
+  Wc,
+  LocalFireDepartment,
+  CheckCircle,
+  WaterDrop,
+  LocalGroceryStore,
+  Bolt
 } from '@mui/icons-material';
 import { getAccommodation } from '../services/api';
 import MapView from './MapView';
 import './AccommodationDetails.css';
+
+const getAmenityIcon = (amenity) => {
+  const amenityMap = {
+    'Pool': <Pool />,
+    'Parking': <LocalParking />,
+    'WiFi': <Wifi />,
+    'Restaurant': <Restaurant />,
+    'Air Conditioning': <AcUnit />,
+    'Room Service': <RoomService />,
+    'Spa': <Spa />,
+    'Gym': <FitnessCenter />,
+    'Bar': <LocalBar />,
+    'Business Center': <BusinessCenter />,
+    'Conference Room': <MeetingRoom />,
+    'Elevator': <Elevator />,
+    '24/7 Front Desk': <AccessTime />,
+    'Terrace': <Balcony />,
+    'Garden': <Park />,
+    'Shared Kitchen': <Kitchen />,
+    'Shared Bathroom': <LocalLaundryService />,
+    'Common Room': <MeetingRoom />,
+    'Meals Service': <Restaurant />,
+    'Electricity': <Bolt />,
+    'Water Supply': <WaterDrop />,
+    'Showers': <Shower />,
+    'Toilets': <Wc />,
+    'Campfires Allowed': <LocalFireDepartment />,
+    'Grocery Store': <LocalGroceryStore />
+  };
+
+  return amenityMap[amenity] || <CheckCircle />;
+};
 
 function AccommodationDetails() {
   const { id } = useParams();
@@ -73,14 +142,95 @@ function AccommodationDetails() {
     }
   };
 
-  const renderAmenities = (details) => {
+  const renderAmenities = (details, type) => {
     const amenities = [];
-    if (details?.has_pool) amenities.push({ icon: <Pool />, label: 'Swimming Pool' });
-    if (details?.has_parking) amenities.push({ icon: <LocalParking />, label: 'Parking' });
+    
     if (details?.has_wifi) amenities.push({ icon: <Wifi />, label: 'WiFi' });
-    if (details?.has_restaurant) amenities.push({ icon: <Restaurant />, label: 'Restaurant' });
+    if (details?.has_parking) amenities.push({ icon: <LocalParking />, label: 'Parking' });
     if (details?.has_ac) amenities.push({ icon: <AcUnit />, label: 'Air Conditioning' });
     
+    switch (type?.toLowerCase()) {
+      case 'hotel':
+        if (details?.has_pool) amenities.push({ icon: <Pool />, label: 'Swimming Pool' });
+        if (details?.has_restaurant) amenities.push({ icon: <Restaurant />, label: 'Restaurant' });
+        if (details?.has_room_service) amenities.push({ icon: <RoomService />, label: 'Room Service' });
+        if (details?.has_spa) amenities.push({ icon: <Spa />, label: 'Spa' });
+        if (details?.has_fitness_center) amenities.push({ icon: <FitnessCenter />, label: 'Fitness Center' });
+        if (details?.has_business_center) amenities.push({ icon: <BusinessCenter />, label: 'Business Center' });
+        if (details?.has_bar) amenities.push({ icon: <LocalBar />, label: 'Bar' });
+        if (details?.has_conference) amenities.push({ icon: <MeetingRoom />, label: 'Conference Room' });
+        if (details?.has_elevator) amenities.push({ icon: <Elevator />, label: 'Elevator' });
+        if (details?.has_24hr_desk) amenities.push({ icon: <AccessTime />, label: '24/7 Front Desk' });
+        break;
+        
+      case 'riad':
+        if (details?.has_pool) amenities.push({ icon: <Pool />, label: 'Pool' });
+        if (details?.has_terrace) amenities.push({ icon: <Balcony />, label: 'Terrace' });
+        if (details?.has_restaurant) amenities.push({ icon: <Restaurant />, label: 'Restaurant' });
+        if (details?.has_garden) amenities.push({ icon: <Park />, label: 'Garden' });
+        if (details?.has_courtyard) amenities.push({ icon: <Deck />, label: 'Courtyard' });
+        break;
+        
+      case 'apartment':
+        if (details?.has_kitchen) amenities.push({ icon: <Kitchen />, label: 'Kitchen' });
+        if (details?.has_tv) amenities.push({ icon: <Tv />, label: 'TV' });
+        if (details?.has_balcony) amenities.push({ icon: <Balcony />, label: 'Balcony' });
+        if (details?.has_laundry) amenities.push({ icon: <LocalLaundryService />, label: 'Laundry' });
+        if (details?.has_living_room) amenities.push({ icon: <Weekend />, label: 'Living Room' });
+        if (details?.has_dining_area) amenities.push({ icon: <DiningIcon />, label: 'Dining Area' });
+        if (details?.has_washing_machine) amenities.push({ icon: <LocalLaundryService />, label: 'Washing Machine' });
+        break;
+
+      case 'villa':
+        if (details?.has_pool) amenities.push({ icon: <Pool />, label: 'Private Pool' });
+        if (details?.has_kitchen) amenities.push({ icon: <Kitchen />, label: 'Kitchen' });
+        if (details?.has_garden) amenities.push({ icon: <Park />, label: 'Garden' });
+        if (details?.has_bbq) amenities.push({ icon: <OutdoorGrill />, label: 'BBQ' });
+        if (details?.has_terrace) amenities.push({ icon: <Balcony />, label: 'Terrace' });
+        if (details?.has_parking) amenities.push({ icon: <LocalParking />, label: 'Private Parking' });
+        if (details?.has_laundry) amenities.push({ icon: <LocalLaundryService />, label: 'Laundry' });
+        break;
+
+      case 'camping':
+        if (details?.has_shower) amenities.push({ icon: <Shower />, label: 'Shared Showers' });
+        if (details?.has_toilet) amenities.push({ icon: <Wc />, label: 'Shared Toilets' });
+        if (details?.has_bbq) amenities.push({ icon: <OutdoorGrill />, label: 'BBQ Area' });
+        if (details?.has_kitchen) amenities.push({ icon: <Kitchen />, label: 'Shared Kitchen' });
+        if (details?.has_campfire) amenities.push({ icon: <LocalFireDepartment />, label: 'Campfire Area' });
+        if (details?.has_playground) amenities.push({ icon: <Park />, label: 'Playground' });
+        break;
+
+      case 'auberge':
+        if (details?.has_restaurant) amenities.push({ icon: <Restaurant />, label: 'Restaurant' });
+        if (details?.has_shared_kitchen) amenities.push({ icon: <Kitchen />, label: 'Shared Kitchen' });
+        if (details?.has_common_room) amenities.push({ icon: <Weekend />, label: 'Common Room' });
+        if (details?.has_terrace) amenities.push({ icon: <Balcony />, label: 'Terrace' });
+        if (details?.has_laundry) amenities.push({ icon: <LocalLaundryService />, label: 'Laundry' });
+        if (details?.has_lockers) amenities.push({ icon: <Lock />, label: 'Lockers' });
+        break;
+    }
+
+    if (details?.has_safe) amenities.push({ icon: <Lock />, label: 'Safe' });
+    if (details?.has_minibar) amenities.push({ icon: <LocalBar />, label: 'Mini Bar' });
+    if (details?.has_iron) amenities.push({ icon: <Iron />, label: 'Iron' });
+    if (details?.has_hair_dryer) amenities.push({ icon: <Dry />, label: 'Hair Dryer' });
+    if (details?.has_heating) amenities.push({ icon: <Thermostat />, label: 'Heating' });
+    if (details?.has_sea_view) amenities.push({ icon: <BeachAccess />, label: 'Sea View' });
+    if (details?.has_mountain_view) amenities.push({ icon: <Landscape />, label: 'Mountain View' });
+    if (details?.has_city_view) amenities.push({ icon: <LocationCity />, label: 'City View' });
+    if (details?.has_airport_shuttle) amenities.push({ icon: <AirportShuttle />, label: 'Airport Shuttle' });
+    if (details?.has_concierge) amenities.push({ icon: <SupportAgent />, label: 'Concierge' });
+    if (details?.has_luggage_storage) amenities.push({ icon: <Luggage />, label: 'Luggage Storage' });
+    if (details?.has_pet_friendly) amenities.push({ icon: <Pets />, label: 'Pet Friendly' });
+
+    if (details?.amenities) {
+      const customAmenities = details.amenities.split(',').map(amenity => ({
+        icon: getAmenityIcon(amenity.trim()),
+        label: amenity.trim()
+      }));
+      amenities.push(...customAmenities);
+    }
+
     return amenities;
   };
 
@@ -332,19 +482,78 @@ function AccommodationDetails() {
 
               <Divider sx={{ my: 3 }} />
 
-              <Typography variant="h6" gutterBottom color="primary">
-                Amenities
-              </Typography>
-              <Grid container spacing={2} sx={{ mb: 3 }}>
-                {renderAmenities(accommodation.details).map((amenity, index) => (
-                  <Grid item xs={6} sm={4} key={index}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      {amenity.icon}
-                      <Typography variant="body2">{amenity.label}</Typography>
-                    </Box>
+              {accommodation && accommodation.details && (
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="h6" gutterBottom color="primary" sx={{ mb: 2 }}>
+                    Amenities
+                  </Typography>
+                  <Grid container spacing={1}>
+                    {Object.entries(accommodation.details)
+                      .filter(([key, value]) => 
+                        (key.startsWith('has_') || key.startsWith('allows_')) && 
+                        value === 1 && 
+                        key !== 'has_id' && 
+                        key !== 'has_accommodation_id'
+                      )
+                      .map(([key], index) => {
+                        const amenityName = key
+                          .replace('has_', '')
+                          .replace('allows_', '')
+                          .split('_')
+                          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(' ');
+                        return (
+                          <Grid item xs={6} sm={4} md={3} key={index}>
+                            <Box sx={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 1,
+                              py: 0.75,
+                              px: 1,
+                              borderRadius: 1,
+                              transition: 'all 0.2s ease',
+                              '&:hover': {
+                                bgcolor: 'primary.light',
+                                color: 'white',
+                                '& .amenity-icon': {
+                                  color: 'white',
+                                },
+                                '& .amenity-text': {
+                                  color: 'white',
+                                }
+                              }
+                            }}>
+                              <Box 
+                                className="amenity-icon"
+                                sx={{
+                                  color: 'primary.main',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  transition: 'color 0.2s ease',
+                                  '& svg': {
+                                    fontSize: '1.2rem'
+                                  }
+                                }}
+                              >
+                                {getAmenityIcon(amenityName)}
+                              </Box>
+                              <Typography 
+                                variant="body2"
+                                className="amenity-text"
+                                sx={{ 
+                                  fontSize: '0.875rem',
+                                  transition: 'color 0.2s ease'
+                                }}
+                              >
+                                {amenityName}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                        );
+                      })}
                   </Grid>
-                ))}
-              </Grid>
+                </Box>
+              )}
 
               <Divider sx={{ my: 3 }} />
 
@@ -373,7 +582,7 @@ function AccommodationDetails() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <Language color="primary" />
                       <Button
-                        href={accommodation.website}
+                        href={accommodation.website.startsWith('http') ? accommodation.website : `https://${accommodation.website}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         color="primary"
@@ -419,6 +628,8 @@ function AccommodationDetails() {
           </Card>
         </Grid>
       </Grid>
+
+      
     </Container>
   );
 }

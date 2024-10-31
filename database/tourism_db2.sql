@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2024 at 09:57 AM
+-- Generation Time: Oct 31, 2024 at 10:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,138 @@ SET time_zone = "+00:00";
 --
 -- Database: `tourism_db2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accommodations`
+--
+
+CREATE TABLE `accommodations` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` enum('Hotel','Riad','Camping','Auberge','Apartment','Villa') NOT NULL,
+  `description` text DEFAULT NULL,
+  `address` varchar(255) NOT NULL,
+  `latitude` decimal(10,8) DEFAULT NULL,
+  `longitude` decimal(11,8) DEFAULT NULL,
+  `city_id` int(11) NOT NULL,
+  `region_id` int(11) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `price_range` enum('$','$$','$$$','$$$$') DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accommodations`
+--
+
+INSERT INTO `accommodations` (`id`, `name`, `type`, `description`, `address`, `latitude`, `longitude`, `city_id`, `region_id`, `rating`, `price_range`, `phone`, `email`, `website`) VALUES
+(1, 'Mamounia Palace', 'Hotel', 'La Mamounia is a luxury hotel located in Marrakech, Morocco. The hotel has hosted numerous notable guests including Winston Churchill, Charlie Chaplin, and Alfred Hitchcock.', 'Avenue Bab Jdid, Marrakech 40040, Morocco', 31.62340000, -7.98940000, 7, 7, 4.9, '$$$$', '+212524388600', 'reservations@mamounia.com', 'www.mamounia.com'),
+(2, 'Movenpick Hotel Casablanca', 'Hotel', 'Modern 5-star hotel in the heart of the business district, offering panoramic views of the city and the Atlantic Ocean.', 'Route El Jadida, Casa Twin Center, Casablanca 20000', 33.57310000, -7.64250000, 6, 6, 4.5, '$$$', '+212529009400', 'hotel.casablanca@movenpick.com', 'www.movenpick.com'),
+(3, 'Hilton Tangier City Center', 'Hotel', 'Contemporary hotel in Tangier\'s business district with stunning views over the Mediterranean Sea.', 'Place du Maghreb Arabe, Tangier 90000', 35.76750000, -5.80320000, 1, 1, 4.6, '$$$', '+212539309700', 'tangier.info@hilton.com', 'www.hilton.com/tangier'),
+(4, 'Riad Fès', 'Riad', 'Luxury riad in the heart of Fès medina, offering traditional Moroccan architecture and modern comfort.', '5 Derb Ben Slimane, Zerbtana, Fès 30000', 34.04330000, -4.98250000, 3, 3, 4.8, '$$$$', '+212535947610', 'reservation@riadfes.com', 'www.riadfes.com'),
+(5, 'Riad Kniza', 'Riad', 'Historic 18th-century riad in Marrakech medina, beautifully restored to its original splendor.', '34 Derb l\'Hotel, Bab Doukala, Marrakech 40000', 31.63350000, -7.98970000, 7, 7, 4.9, '$$$', '+212524376942', 'info@riadkniza.com', 'www.riadkniza.com'),
+(6, 'Camping Atlantica Imourane', 'Camping', 'Beachfront camping site near Agadir with modern facilities and ocean views.', 'Route d\'Imourane, Agadir 80000', 30.50210000, -9.66120000, 8, 9, 4.2, '$', '+212528200145', 'camping.atlantica@gmail.com', 'www.camping-atlantica.com'),
+(7, 'Camping Zebra', 'Camping', 'Desert camping experience in Merzouga with traditional Berber tents and modern amenities.', 'Route de Merzouga, Errachidia 52202', 31.15270000, -4.01710000, 11, 8, 4.4, '$$', '+212661208359', 'info@campingzebra.com', 'www.campingzebra.com'),
+(8, 'Auberge Le Festival', 'Auberge', 'Charming auberge in the Dadès Gorges offering traditional Moroccan hospitality.', 'Gorges du Dadès, Boumalne Dadès 45150', 31.52520000, -5.97330000, 19, 8, 4.5, '$$', '+212524898451', 'info@aubergelefestival.com', 'www.aubergelefestival.com'),
+(9, 'Auberge Kasbah Leila', 'Auberge', 'Traditional kasbah-style auberge with panoramic views of the Atlas Mountains.', 'Douar Ait Bouguemez, Azilal 22000', 31.65630000, -6.36510000, 16, 5, 4.3, '$$', '+212524340082', 'contact@kasbahleila.com', 'www.kasbahleila.com'),
+(10, 'Marina Beach Villa', 'Villa', 'Luxury beachfront villa in Marina Smir with private pool and garden.', 'Marina Smir, Tetouan 93000', 35.74560000, -5.33240000, 2, 1, 4.7, '$$$$', '+212539975123', 'booking@marinasmirvillas.com', 'www.marinasmirvillas.com'),
+(11, 'Anfa Place Apartments', 'Apartment', 'Modern seafront apartments in Casablanca\'s prestigious Anfa district.', 'Boulevard de l\'Ocean Atlantique, Casablanca 20220', 33.59530000, -7.66820000, 6, 6, 4.4, '$$$', '+212522798456', 'contact@anfaplace.com', 'www.anfaplace.com'),
+(20, 'Hotel Atlas', 'Hotel', 'A luxury hotel located near the Atlas Mountains, offering breathtaking views.', '456 Mountain Road, Marrakech', 31.62310000, -8.01310000, 7, 7, 4.8, '$$$$', '+212 5 24 00 01', 'info@hotelatlas.com', 'http://www.hotelatlas.com'),
+(21, 'Riad Aladdin', 'Riad', 'Traditional Moroccan riad with exquisite decor and a serene courtyard.', '789 Riad Street, Marrakech', 31.63520000, -7.98760000, 7, 7, 4.6, '$$', '+212 5 24 00 02', 'contact@riadaladdin.com', 'http://www.riadaladdin.com'),
+(22, 'Camping Sahara', 'Camping', 'A unique camping experience in the Sahara desert, under the stars.', '100 Desert Camp, Merzouga', 31.13560000, -4.00490000, 11, 8, 4.5, '$', '+212 6 12 34 56', 'info@campingsahara.com', 'http://www.campingsahara.com'),
+(23, 'Villa Oasis', 'Villa', 'Luxurious villa with private pool and garden, perfect for family gatherings.', '258 Oasis Avenue, Agadir', 30.42010000, -9.59820000, 8, 9, 4.9, '$$$$', '+212 5 28 00 03', 'info@villaoasis.com', 'http://www.villaoasis.com'),
+(24, 'Auberge La Paix', 'Auberge', 'Cozy auberge with a communal kitchen and warm atmosphere.', '321 Peace Lane, Chefchaouen', 35.16950000, -5.26700000, 2, 1, 4, '$$', '+212 5 39 00 04', 'info@aubergelapaix.com', 'http://www.aubergelapaix.com'),
+(25, 'Apartment Zen', 'Apartment', 'Modern apartment in the city center, close to attractions.', '123 City Center, Rabat', 34.02090000, -6.84160000, 5, 4, 4.3, '$$', '+212 6 23 45 67', 'contact@apartmentzen.com', 'http://www.apartmentzen.com'),
+(26, 'Riad La Belle', 'Riad', 'Elegant riad featuring beautiful art and a rooftop terrace.', '654 Art Street, Fes', 34.05900000, -4.97300000, 3, 3, 4.7, '$$', '+212 5 35 00 05', 'info@riadlabelle.com', 'http://www.riadlabelle.com'),
+(27, 'Hotel Casablanca', 'Hotel', 'Charming hotel located near the beach, ideal for relaxation.', '987 Beach Blvd, Casablanca', 33.57310000, -7.58980000, 6, 6, 4.4, '$$$', '+212 5 22 00 06', 'contact@hotelcasablanca.com', 'http://www.hotelcasablanca.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accommodation_media`
+--
+
+CREATE TABLE `accommodation_media` (
+  `id` int(11) NOT NULL,
+  `accommodation_id` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `type` enum('image','video') NOT NULL,
+  `is_primary` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accommodation_media`
+--
+
+INSERT INTO `accommodation_media` (`id`, `accommodation_id`, `url`, `type`, `is_primary`) VALUES
+(1, 1, 'https://t4.ftcdn.net/jpg/04/13/02/63/240_F_413026322_Y3QgpZVuaCiJFDTclsFh3hAdCMwNhAs6.jpg', 'image', 1),
+(2, 1, 'https://t3.ftcdn.net/jpg/04/13/02/64/240_F_413026400_yYRVNeR1m4pgQdFrAJWrleQeuAp6zfio.jpg', 'image', 0),
+(3, 1, 'https://example.com/mamounia/tour.mp4', 'video', 0),
+(4, 2, 'https://pix10.agoda.net/hotelImages/13507877/0/504e94b5718b2ccd523c29c9bf2364b7.jpg?ca=23&ce=0&s=414x232', 'image', 1),
+(5, 3, 'https://www.hilton.com/im/en/TNGCCHI/5215622/tngcc-hotel-exterior.jpg?impolicy=crop&cw=6720&ch=3762&gravity=NorthWest&xposition=0&yposition=358&rw=768&rh=430', 'image', 1),
+(6, 4, 'https://jigsawtravel.com.au/wp-content/uploads/Blog-Pics-2.jpg', 'image', 1),
+(7, 5, 'https://www.riadkniza.com/images/gallery/low/Riad-1.jpg', 'image', 1),
+(8, 6, 'https://api.atlanticaparc.com/wp-content/uploads/2020/06/IMG_9434-scaled.jpg', 'image', 1),
+(9, 7, 'https://campingzebra.allhotelsmorocco.com/data/Images/1080x700w/13790/1379070/1379070479/ouzoud-camping-zebra-villa-image-16.JPEG', 'image', 1),
+(10, 8, 'https://www.aubergelefestival-todragorge.com/wp-content/uploads/2011/01/todragorge-lefestival.jpg', 'image', 1),
+(11, 9, 'https://aubergekasbahleila.allhotelsmorocco.com/data/Images/1080x700w/7120/712063/712063147/erfoud-auberge-kasbah-leila-image-10.JPEG', 'image', 1),
+(12, 10, 'http://marinabeach.ma/images/projects/projet5.jpg', 'image', 1),
+(13, 11, 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/431604749.jpg?k=6fbefbc129b9ec05713a1bbd0b21e5ccd742aacfd26252ab144a5a6cbc0f8144&o=&hp=1', 'image', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auberges`
+--
+
+CREATE TABLE `auberges` (
+  `accommodation_id` int(11) NOT NULL,
+  `room_count` int(11) DEFAULT NULL,
+  `has_shared_kitchen` tinyint(1) DEFAULT 0,
+  `has_shared_bathroom` tinyint(1) DEFAULT 0,
+  `has_common_room` tinyint(1) DEFAULT 0,
+  `has_wifi` tinyint(1) DEFAULT 0,
+  `has_parking` tinyint(1) DEFAULT 0,
+  `serves_meals` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `auberges`
+--
+
+INSERT INTO `auberges` (`accommodation_id`, `room_count`, `has_shared_kitchen`, `has_shared_bathroom`, `has_common_room`, `has_wifi`, `has_parking`, `serves_meals`) VALUES
+(8, 12, 1, 1, 1, 1, 1, 1),
+(9, 15, 0, 0, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `campings`
+--
+
+CREATE TABLE `campings` (
+  `accommodation_id` int(11) NOT NULL,
+  `total_spots` int(11) DEFAULT NULL,
+  `has_electricity` tinyint(1) DEFAULT 0,
+  `has_water_supply` tinyint(1) DEFAULT 0,
+  `has_showers` tinyint(1) DEFAULT 0,
+  `has_toilets` tinyint(1) DEFAULT 0,
+  `allows_campfires` tinyint(1) DEFAULT 0,
+  `has_grocery_store` tinyint(1) DEFAULT 0,
+  `has_restaurant` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campings`
+--
+
+INSERT INTO `campings` (`accommodation_id`, `total_spots`, `has_electricity`, `has_water_supply`, `has_showers`, `has_toilets`, `allows_campfires`, `has_grocery_store`, `has_restaurant`) VALUES
+(6, 100, 1, 1, 1, 1, 0, 1, 1),
+(7, 50, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -94,6 +226,42 @@ INSERT INTO `cities` (`id`, `name`, `description`, `attitude`, `has_beach`, `pop
 (45, 'Tiznit', 'Tiznit, a picturesque town nestled in the Anti-Atlas Mountains of Morocco, is celebrated for its rich history and vibrant culture. Known as the silver capital of Morocco, Tiznit boasts a long-standing tradition of craftsmanship, particularly in silver jewelry. The town\'s winding streets are lined with shops showcasing intricate designs, offering visitors a unique opportunity to acquire handmade treasures.\n\nThe heart of Tiznit is its ancient medina, where traditional architecture meets the charm of local life. The medina is surrounded by well-preserved walls, featuring stunning gateways that reflect the town’s historical significance. As you wander through its narrow alleys, you’ll discover bustling souks filled with spices, textiles, and artisan goods, inviting you to immerse yourself in the local culture.\n\nTiznit is also a gateway to the breathtaking natural beauty of the surrounding region. Nearby, the dramatic landscapes of the Anti-Atlas Mountains offer hiking and outdoor activities, while the pristine beaches of the Atlantic coast are just a short drive away. The town’s location makes it an ideal base for exploring the diverse attractions of southern Morocco.\n\nFor those seeking cultural experiences, Tiznit hosts vibrant festivals throughout the year, celebrating local traditions and the artistry of its people. The warm hospitality of its residents enhances the experience, making visitors feel at home in this charming town.\n\nWhether you’re drawn by its artisanal heritage, stunning scenery, or the allure of Moroccan culture, Tiznit is a captivating destination that promises unforgettable memories.\n\n\n\n', NULL, 0, 50000, 120, 500, 4.1, 'GMT+1', 9),
 (46, 'Inezgane', 'Inezgane, a vibrant town located just a stone\'s throw from Agadir, serves as a bustling hub of commerce and culture in southwestern Morocco. Known for its lively atmosphere, this charming town offers a unique blend of traditional Moroccan life and modern urban flair.\n\nThe heart of Inezgane is its bustling market, where locals and visitors alike gather to browse a rich array of goods, from fresh produce and spices to handmade crafts and textiles. The market is a sensory delight, filled with the vibrant colors and aromas that define Moroccan culture.\n\nInezgane is also renowned for its friendly community, where hospitality is a way of life. Strolling through its streets, you’ll encounter welcoming locals eager to share their stories and traditions. The town\'s strategic location makes it an ideal base for exploring the stunning beaches of Agadir or venturing into the nearby Anti-Atlas mountains.\n\nFor those interested in history, Inezgane’s architecture reflects its rich cultural heritage, with a mix of traditional and contemporary styles. The town provides an authentic experience, showcasing the warmth of Moroccan hospitality and the charm of everyday life.\n\nWhether you’re seeking shopping, cultural immersion, or a base for your Moroccan adventures, Inezgane is a delightful destination that captures the essence of the region.', NULL, 0, 40000, 20, 100, 4, 'GMT+1', 9),
 (47, 'Driouch', '\nDriouch\nNestled in the heart of northeastern Morocco, Driouch is a charming town that serves as a gateway to the breathtaking landscapes of the Rif Mountains. Known for its friendly atmosphere and vibrant local culture, Driouch offers a unique glimpse into the daily lives of its residents.\n\nThe town is surrounded by lush greenery and rolling hills, making it an ideal destination for nature enthusiasts and hikers. Visitors can explore the scenic trails that lead to stunning viewpoints, where the beauty of the Rif region unfolds.\n\nDriouch is also known for its traditional markets, where locals sell handmade crafts, fresh produce, and regional delicacies. The warm hospitality of the community adds to the town\'s charm, making it a perfect spot to experience authentic Moroccan culture.\n\nWhether you\'re seeking adventure in the mountains or a peaceful retreat in a picturesque setting, Driouch offers a delightful escape for travelers looking to explore the lesser-known gems of Morocco.', NULL, 0, 25000, 40, 600, 3.8, 'GMT+1', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hotels`
+--
+
+CREATE TABLE `hotels` (
+  `accommodation_id` int(11) NOT NULL,
+  `star_rating` int(11) DEFAULT NULL,
+  `room_count` int(11) DEFAULT NULL,
+  `has_pool` tinyint(1) DEFAULT 0,
+  `has_spa` tinyint(1) DEFAULT 0,
+  `has_gym` tinyint(1) DEFAULT 0,
+  `has_restaurant` tinyint(1) DEFAULT 0,
+  `has_room_service` tinyint(1) DEFAULT 0,
+  `has_parking` tinyint(1) DEFAULT 0,
+  `has_conference_rooms` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hotels`
+--
+
+INSERT INTO `hotels` (`accommodation_id`, `star_rating`, `room_count`, `has_pool`, `has_spa`, `has_gym`, `has_restaurant`, `has_room_service`, `has_parking`, `has_conference_rooms`) VALUES
+(1, 5, 209, 1, 1, 1, 1, 1, 1, 1),
+(2, 5, 184, 1, 1, 1, 1, 1, 1, 1),
+(3, 4, 180, 1, 1, 1, 1, 1, 1, 1),
+(20, 5, 50, 1, 1, 1, 1, 1, 1, 1),
+(21, 4, 12, 0, 0, 0, 1, 0, 0, 0),
+(22, 3, 30, 0, 0, 0, 0, 0, 1, 0),
+(23, 5, 6, 1, 1, 1, 1, 1, 1, 1),
+(24, 2, 10, 0, 0, 0, 0, 0, 1, 0),
+(25, 4, 20, 1, 1, 0, 1, 1, 1, 0),
+(26, 4, 15, 0, 0, 0, 1, 0, 1, 0),
+(27, 4, 25, 1, 1, 1, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -193,6 +361,59 @@ INSERT INTO `regions` (`id`, `name`, `description`, `tourism_rating`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rental_properties`
+--
+
+CREATE TABLE `rental_properties` (
+  `accommodation_id` int(11) NOT NULL,
+  `property_type` enum('Apartment','Villa') NOT NULL,
+  `bedrooms` int(11) DEFAULT NULL,
+  `bathrooms` int(11) DEFAULT NULL,
+  `max_guests` int(11) DEFAULT NULL,
+  `has_pool` tinyint(1) DEFAULT 0,
+  `has_parking` tinyint(1) DEFAULT 0,
+  `has_garden` tinyint(1) DEFAULT 0,
+  `has_ac` tinyint(1) DEFAULT 0,
+  `has_kitchen` tinyint(1) DEFAULT 0,
+  `has_wifi` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rental_properties`
+--
+
+INSERT INTO `rental_properties` (`accommodation_id`, `property_type`, `bedrooms`, `bathrooms`, `max_guests`, `has_pool`, `has_parking`, `has_garden`, `has_ac`, `has_kitchen`, `has_wifi`) VALUES
+(10, 'Villa', 5, 4, 10, 1, 1, 1, 1, 1, 1),
+(11, 'Apartment', 2, 2, 4, 0, 1, 0, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `riads`
+--
+
+CREATE TABLE `riads` (
+  `accommodation_id` int(11) NOT NULL,
+  `room_count` int(11) DEFAULT NULL,
+  `has_pool` tinyint(1) DEFAULT 0,
+  `has_traditional_hammam` tinyint(1) DEFAULT 0,
+  `has_courtyard` tinyint(1) DEFAULT 0,
+  `has_terrace` tinyint(1) DEFAULT 0,
+  `has_parking` tinyint(1) DEFAULT 0,
+  `serves_breakfast` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `riads`
+--
+
+INSERT INTO `riads` (`accommodation_id`, `room_count`, `has_pool`, `has_traditional_hammam`, `has_courtyard`, `has_terrace`, `has_parking`, `serves_breakfast`) VALUES
+(4, 15, 1, 1, 1, 1, 1, 1),
+(5, 11, 1, 1, 1, 1, 0, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `touristsites`
 --
 
@@ -254,11 +475,44 @@ INSERT INTO `touristsites` (`id`, `name`, `description`, `type`, `images`, `vide
 --
 
 --
+-- Indexes for table `accommodations`
+--
+ALTER TABLE `accommodations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_accommodation_city` (`city_id`),
+  ADD KEY `fk_accommodation_region` (`region_id`);
+
+--
+-- Indexes for table `accommodation_media`
+--
+ALTER TABLE `accommodation_media`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_accommodation_media` (`accommodation_id`);
+
+--
+-- Indexes for table `auberges`
+--
+ALTER TABLE `auberges`
+  ADD PRIMARY KEY (`accommodation_id`);
+
+--
+-- Indexes for table `campings`
+--
+ALTER TABLE `campings`
+  ADD PRIMARY KEY (`accommodation_id`);
+
+--
 -- Indexes for table `cities`
 --
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`id`),
   ADD KEY `region_id` (`region_id`);
+
+--
+-- Indexes for table `hotels`
+--
+ALTER TABLE `hotels`
+  ADD PRIMARY KEY (`accommodation_id`);
 
 --
 -- Indexes for table `monuments`
@@ -276,6 +530,18 @@ ALTER TABLE `regions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `rental_properties`
+--
+ALTER TABLE `rental_properties`
+  ADD PRIMARY KEY (`accommodation_id`);
+
+--
+-- Indexes for table `riads`
+--
+ALTER TABLE `riads`
+  ADD PRIMARY KEY (`accommodation_id`);
+
+--
 -- Indexes for table `touristsites`
 --
 ALTER TABLE `touristsites`
@@ -285,6 +551,18 @@ ALTER TABLE `touristsites`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `accommodations`
+--
+ALTER TABLE `accommodations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `accommodation_media`
+--
+ALTER TABLE `accommodation_media`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cities`
@@ -315,10 +593,41 @@ ALTER TABLE `touristsites`
 --
 
 --
+-- Constraints for table `accommodations`
+--
+ALTER TABLE `accommodations`
+  ADD CONSTRAINT `fk_accommodation_city` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
+  ADD CONSTRAINT `fk_accommodation_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`);
+
+--
+-- Constraints for table `accommodation_media`
+--
+ALTER TABLE `accommodation_media`
+  ADD CONSTRAINT `fk_accommodation_media` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
+
+--
+-- Constraints for table `auberges`
+--
+ALTER TABLE `auberges`
+  ADD CONSTRAINT `fk_auberge_accommodation` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
+
+--
+-- Constraints for table `campings`
+--
+ALTER TABLE `campings`
+  ADD CONSTRAINT `fk_camping_accommodation` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
+
+--
 -- Constraints for table `cities`
 --
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`);
+
+--
+-- Constraints for table `hotels`
+--
+ALTER TABLE `hotels`
+  ADD CONSTRAINT `fk_hotel_accommodation` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
 
 --
 -- Constraints for table `monuments`
@@ -326,6 +635,18 @@ ALTER TABLE `cities`
 ALTER TABLE `monuments`
   ADD CONSTRAINT `fk_region` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `monuments_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
+
+--
+-- Constraints for table `rental_properties`
+--
+ALTER TABLE `rental_properties`
+  ADD CONSTRAINT `fk_rental_accommodation` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
+
+--
+-- Constraints for table `riads`
+--
+ALTER TABLE `riads`
+  ADD CONSTRAINT `fk_riad_accommodation` FOREIGN KEY (`accommodation_id`) REFERENCES `accommodations` (`id`);
 
 --
 -- Constraints for table `touristsites`
