@@ -25,7 +25,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: 'http://localhost:3000', // or your frontend URL
+  origin: 'http://localhost:3001', // or your frontend URL
   credentials: true,
 }));
 

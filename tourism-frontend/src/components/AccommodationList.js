@@ -16,7 +16,8 @@ import {
   Skeleton,
   Rating,
   Button,
-  Collapse
+  Collapse,
+  Chip
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { getAccommodations, getAccommodationLocations } from '../services/api';
@@ -28,6 +29,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MapIcon from '@mui/icons-material/Map';
 import MapView from './MapView';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+
 
 function AccommodationList() {
   const [accommodations, setAccommodations] = useState([]);
@@ -40,6 +43,8 @@ function AccommodationList() {
   const [error, setError] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const [selectedAccommodation, setSelectedAccommodation] = useState(null);
+  const [totalItems, setTotalItems] = useState(0);
+
 
   const accommodationTypes = [
     'Hotel',
@@ -84,6 +89,7 @@ function AccommodationList() {
       const response = await getAccommodations(page, 6, searchTerm, selectedType);
       setAccommodations(response.data);
       setTotalPages(response.totalPages);
+      setTotalItems(response.totalItems);
     } catch (err) {
       setError('Failed to fetch accommodations');
       console.error(err);
@@ -134,10 +140,62 @@ function AccommodationList() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, flexDirection: 'column', pb: { xs: '65px', sm: 0 } }}>
-      <Typography variant="h4" component="h1" gutterBottom color="primary">
-        Accommodations
-      </Typography>
-
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 3, 
+        mb: 4,
+        position: 'relative'
+      }}>
+        <Typography variant="h4" component="h1" color="primary">
+          Accommodations
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            bgcolor: 'primary.main',
+            color: 'white',
+            py: 1,
+            px: 2,
+            borderRadius: '30px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+            },
+          }}
+        >
+          <ApartmentIcon 
+            sx={{ 
+              fontSize: '1.3rem',
+              animation: 'pulse 2s infinite',
+              '@keyframes pulse': {
+                '0%': {
+                  transform: 'scale(1)',
+                },
+                '50%': {
+                  transform: 'scale(1.1)',
+                },
+                '100%': {
+                  transform: 'scale(1)',
+                },
+              },
+            }} 
+          />
+          <Typography 
+            sx={{ 
+              fontWeight: 500,
+              fontSize: '0.95rem',
+              letterSpacing: '0.5px',
+            }}
+          >
+            {totalItems.toLocaleString()} {totalItems <= 1 ? 'Property' : 'Properties'}
+          </Typography>
+        </Box>
+      </Box>
       <Box sx={{ mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <TextField
           fullWidth

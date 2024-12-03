@@ -204,7 +204,7 @@ function HomePage() {
                   >
                     <CountUp
                       end={stat.value}
-                      duration={2.5}
+                      duration={3}
                       separator=","
                       suffix={stat.suffix}
                     />
@@ -237,10 +237,10 @@ function HomePage() {
             }}
           >
             {[
-              '/images/morocco-1.jpg',
-              '/images/morocco-2.jpg',
               '/images/morocco-3.jpg',
-              '/images/morocco-4.jpg'
+              '/images/morocco-8.avif',
+              '/images/morocco-2.jpg',              
+              '/images/morocco-1.jpg'
             ].map((image, index) => (
               <MotionBox
                 key={image}
