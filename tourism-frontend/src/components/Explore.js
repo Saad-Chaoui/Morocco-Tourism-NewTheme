@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import {
   Typography, Box, Container, Card, CardContent,
   FormControl, InputLabel, Select, MenuItem,
-  useTheme, useMediaQuery, Button
+  useTheme, useMediaQuery, Button, Fade, Zoom,
+  Paper, IconButton, Chip, Skeleton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  getRegions,
-  getCitiesByRegion,
-  getMonumentsByRegion,
-  getTouristSitesByRegion,
-  getMonumentsByCity,
-  getMonuments,
-  getTouristSites
+  getRegions, getCitiesByRegion, getMonumentsByRegion,
+  getTouristSitesByRegion, getMonumentsByCity,
+  getMonuments, getTouristSites
 } from '../services/api';
 import RegionMap from './RegionMap';
 import ClearIcon from '@mui/icons-material/Clear';
 import MapIcon from '@mui/icons-material/Map';
+import ExploreIcon from '@mui/icons-material/Explore';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function Explore() {
   const theme = useTheme();
@@ -40,6 +41,10 @@ function Explore() {
   const [mapZoom, setMapZoom] = useState(6);
 
   const ITEMS_TO_SHOW = isMobile ? 3 : 4;
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   // Fetch regions on component mount
   useEffect(() => {
@@ -344,71 +349,110 @@ function Explore() {
       </Box>
     );
   };
-
-  return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-
-        <Typography
-          variant="h4"
-          gutterBottom
-          sx={{
-            color: 'primary.main',
-            fontWeight: 600,
-            mb: 1
-          }}
+  const renderHeroSection = () => (
+    <Box
+      sx={{
+        position: 'relative',
+        height: { xs: '300px', md: '400px' },
+        mb: 6,
+        borderRadius: 4,
+        overflow: 'hidden',
+      }}
+    >
+      <Box
+        component="img"
+        src="/images/morocco-6.avif"
+        sx={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          filter: 'brightness(0.7)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+          textAlign: 'center',
+          padding: 4,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <img
-            src="/images/morocco-flag.png"
-            alt="Morocco Flag"
-            style={{
-              height: '24px',
-              width: 'auto',
-              borderRadius: '2px',
-              marginRight: '8px',
-              paddingTop: '6px'
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: 800,
+              mb: 2,
+              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
             }}
-          />
-          Explore Morocco
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          sx={{
-            color: 'text.secondary',
-            mb: 3
-          }}
-        >
-          Discover the beauty of regions and cities across Morocco
+          >
+            Explore Morocco
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              maxWidth: 600,
+              mx: 'auto',
+              textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+            }}
+          >
+            Discover the magic of ancient monuments and breathtaking tourist sites
+          </Typography>
+        </motion.div>
+      </Box>
+    </Box>
+  );
+
+  const renderFilters = () => (
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        borderRadius: 4,
+        mb: 4,
+        background: 'rgba(255,255,255,0.9)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
+        <FilterListIcon color="primary" />
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          Filter Your Experience
         </Typography>
       </Box>
-
+      
       <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
         gap: 2,
-        mb: 4
       }}>
         <FormControl fullWidth>
-          <InputLabel>Select Region</InputLabel>
+          <InputLabel>Region</InputLabel>
           <Select
             value={selectedRegion}
-            label="Select Region"
+            label="Region"
             onChange={(e) => {
               setSelectedRegion(e.target.value);
               setSelectedCity('all');
-              setShowResults(false);
             }}
             sx={{
               borderRadius: 2,
-              backgroundColor: 'white',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'rgba(0,91,92,0.23)',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'primary.main',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'primary.main',
+              '&:hover': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.main',
+                },
               },
             }}
           >
@@ -422,16 +466,13 @@ function Explore() {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel>Select City</InputLabel>
+          <InputLabel>City</InputLabel>
           <Select
             value={selectedCity}
-            label="Select City"
+            label="City"
             onChange={(e) => setSelectedCity(e.target.value)}
             disabled={selectedRegion === 'all'}
-            sx={{
-              borderRadius: 2,
-              backgroundColor: 'white',
-            }}
+            sx={{ borderRadius: 2 }}
           >
             <MenuItem value="all">All Cities</MenuItem>
             {cities.map((city) => (
@@ -441,15 +482,216 @@ function Explore() {
             ))}
           </Select>
         </FormControl>
+      </Box>
+    </Paper>
+  );
 
-        <Button
-          variant="outlined"
-          onClick={() => setShowMap(!showMap)}
-          startIcon={showMap ? <MapIcon /> : <MapIcon />}
+  const renderCard = (item, type) => (
+  <motion.div
+    variants={cardVariants}
+    initial="hidden"
+    animate="visible"
+    transition={{ duration: 0.5 }}
+  >
+    <Card
+      onClick={() => handleCardClick(type, item.id)}
+      sx={{
+        mb: 3,
+        borderRadius: '20px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        background: '#ffffff',
+        border: '1px solid rgba(0,0,0,0.08)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative',
+        '&:hover': {
+          transform: 'translateY(-8px)',
+          boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
+          '& .card-image': {
+            transform: 'scale(1.05)',
+          },
+          '& .overlay': {
+            opacity: 1,
+          },
+        },
+      }}
+    >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        height: { xs: 'auto', md: '300px' },
+      }}>
+        <Box
           sx={{
-            alignSelf: 'flex-start',
-            borderRadius: 2,
-            px: 3
+            width: { xs: '100%', md: '45%' },
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            className="card-image"
+            component="img"
+            src={item.images && typeof item.images === 'string' 
+              ? JSON.parse(item.images)[0] 
+              : Array.isArray(item.images) 
+                ? item.images[0] 
+                : ''}
+            alt={item.name}
+            sx={{
+              width: '100%',
+              height: { xs: '250px', md: '100%' },
+              objectFit: 'cover',
+              transition: 'transform 0.6s ease',
+            }}
+          />
+          <Box
+            className="overlay"
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)',
+              opacity: 0,
+              transition: 'opacity 0.3s ease',
+            }}
+          />
+          <Chip
+            label={type === 'monument' ? 'Monument' : 'Tourist Site'}
+            sx={{
+              position: 'absolute',
+              top: 16,
+              left: 16,
+              backgroundColor: 'rgba(255,255,255,0.95)',
+              color: 'primary.main',
+              fontWeight: 600,
+              backdropFilter: 'blur(4px)',
+              '& .MuiChip-label': {
+                px: 2,
+              },
+            }}
+          />
+        </Box>
+
+        <CardContent
+          sx={{
+            flex: 1,
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            background: '#ffffff',
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                color: '#1a1a1a',
+                fontSize: { xs: '1.5rem', md: '1.75rem' },
+                mb: 2,
+                lineHeight: 1.2,
+              }}
+            >
+              {item.name}
+            </Typography>
+            
+            <Typography
+              variant="body1"
+              sx={{
+                color: '#666666',
+                mb: 3,
+                lineHeight: 1.6,
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                fontSize: '0.95rem',
+              }}
+            >
+              {truncateText(item.description, isMobile ? 120 : 200)}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: 'auto',
+              pt: 2,
+              borderTop: '1px solid rgba(0,0,0,0.08)',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <LocationOnIcon
+                sx={{
+                  color: 'primary.main',
+                  fontSize: '1.2rem',
+                }}
+              />
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#666666',
+                  fontWeight: 500,
+                }}
+              >
+                {item.city || 'Location'}
+              </Typography>
+            </Box>
+
+            <Button
+              variant="contained"
+              endIcon={<ArrowForwardIcon />}
+              sx={{
+                borderRadius: '12px',
+                px: 3,
+                py: 1,
+                textTransform: 'none',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                boxShadow: 'none',
+                '&:hover': {
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  transform: 'translateY(-2px)',
+                },
+                transition: 'all 0.3s ease',
+                background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+              }}
+            >
+              Discover
+            </Button>
+          </Box>
+        </CardContent>
+      </Box>
+    </Card>
+  </motion.div>
+);
+  return (
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {renderHeroSection()}
+      {renderFilters()}
+      
+      <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+        <Button
+          variant="contained"
+          onClick={() => setShowMap(!showMap)}
+          startIcon={<MapIcon />}
+          sx={{
+            borderRadius: 8,
+            px: 3,
+            py: 1.5,
+            textTransform: 'none',
           }}
         >
           {showMap ? 'Hide Map' : 'Show Map'}
@@ -457,18 +699,30 @@ function Explore() {
       </Box>
 
       {showMap && (
-        <Box sx={{ mb: 4, height: 400, borderRadius: 2, overflow: 'hidden' }}>
-          <RegionMap
-            markers={mapMarkers}
-            center={mapCenter}
-            zoom={mapZoom}
-            onMarkerClick={handleMarkerClick}
-            selectedMarker={selectedMarker}
-          />
-        </Box>
+        <Fade in={showMap}>
+          <Paper
+            elevation={4}
+            sx={{
+              mb: 4,
+              height: 500,
+              borderRadius: 4,
+              overflow: 'hidden',
+            }}
+          >
+            <RegionMap
+              markers={mapMarkers}
+              center={mapCenter}
+              zoom={mapZoom}
+              onMarkerClick={handleMarkerClick}
+              selectedMarker={selectedMarker}
+            />
+          </Paper>
+        </Fade>
       )}
 
-      {renderResults()}
+      <AnimatePresence>
+        {renderResults()}
+      </AnimatePresence>
     </Container>
   );
 }

@@ -27,6 +27,8 @@ const MotionContainer = motion(Container);
 function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   const sections = [
     {
@@ -81,20 +83,30 @@ function HomePage() {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        pb: { xs: '50px', sm: 0 }
+        pb: { xs: '30px', sm: '40px', md: '50px', lg: 0 }
       }}
     >
       {/* Hero Section */}
       <Box
         sx={{
           position: 'relative',
-          height: { xs: '47vh', sm: '45vh', md: '60vh' },
+          height: { 
+            xs: '60vh',
+            sm: '55vh', 
+            md: '65vh',
+            lg: '70vh' 
+          },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
           background: 'linear-gradient(45deg, #005B5C 30%, #337C7D 90%)',
-          borderRadius: { xs: '0 0 15px 15px', sm: '0 0 25px 25px', md: '0 0 50px 50px' },
+          borderRadius: { 
+            xs: '0 0 15px 15px', 
+            sm: '0 0 25px 25px', 
+            md: '0 0 35px 35px',
+            lg: '0 0 50px 50px' 
+          },
           boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
         }}
       >
@@ -106,9 +118,23 @@ function HomePage() {
             right: 0,
             bottom: 0,
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-            gap: { xs: 2, md: 4 },
-            p: { xs: 2, sm: 3, md: 6 },
+            gridTemplateColumns: { 
+              xs: '1fr',
+              sm: '1fr',
+              md: '1fr 1fr' 
+            },
+            gap: { 
+              xs: 2, 
+              sm: 3,
+              md: 4,
+              lg: 6 
+            },
+            p: { 
+              xs: 2, 
+              sm: 3, 
+              md: 4,
+              lg: 6 
+            },
             zIndex: 2
           }}
         >
@@ -124,16 +150,23 @@ function HomePage() {
               color: 'white',
               zIndex: 2,
               textAlign: { xs: 'center', md: 'left' },
-              width: '100%'
+              width: '100%',
+              maxWidth: { lg: '800px' }
             }}
           >
             <Typography 
               variant="h1" 
               sx={{ 
-                fontSize: { xs: '2rem', sm: '2.5rem', md: '3.5rem' },
+                fontSize: { 
+                  xs: '1.8rem',
+                  sm: '2.5rem',
+                  md: '3rem',
+                  lg: '3.5rem' 
+                },
                 fontWeight: 800,
-                mb: { xs: 1, md: 2 },
-                textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
+                mb: { xs: 1, sm: 1.5, md: 2 },
+                textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
+                letterSpacing: { xs: '0.5px', md: '1px' }
               }}
             >
               Discover Morocco
@@ -141,11 +174,17 @@ function HomePage() {
             <Typography 
               variant="h5"
               sx={{ 
-                mb: { xs: 2, md: 3 },
-                maxWidth: '600px',
-                lineHeight: 1.6,
+                mb: { xs: 2, sm: 2.5, md: 3 },
+                maxWidth: { xs: '100%', sm: '500px', md: '600px' },
+                mx: { xs: 'auto', md: 0 },
+                lineHeight: { xs: 1.4, md: 1.6 },
                 textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
-                fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' }
+                fontSize: { 
+                  xs: '0.9rem',
+                  sm: '1.1rem',
+                  md: '1.3rem',
+                  lg: '1.5rem' 
+                }
               }}
             >
               From ancient medinas to stunning landscapes, experience the magic of Morocco's rich heritage and natural beauty.
@@ -155,11 +194,20 @@ function HomePage() {
             <Box 
               sx={{ 
                 display: 'grid',
-                gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
-                gap: { xs: 1, sm: 2 },
-                mt: { xs: 2, md: 4 },
+                gridTemplateColumns: { 
+                  xs: 'repeat(2, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(4, 1fr)' 
+                },
+                gap: { 
+                  xs: 1,
+                  sm: 1.5,
+                  md: 2,
+                  lg: 3 
+                },
+                mt: { xs: 2, sm: 3, md: 4 },
                 width: '100%',
-                maxWidth: { xs: '340px', sm: 'none' },
+                maxWidth: { xs: '300px', sm: '400px', md: '100%' },
                 mx: { xs: 'auto', md: 0 }
               }}
             >
@@ -180,8 +228,8 @@ function HomePage() {
                   sx={{
                     bgcolor: 'rgba(255,255,255,0.15)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
-                    p: 2,
+                    borderRadius: { xs: 1.5, sm: 2 },
+                    p: { xs: 1.5, sm: 2 },
                     textAlign: 'center',
                     border: '1px solid rgba(255,255,255,0.2)',
                     transition: 'all 0.3s ease',
@@ -198,7 +246,12 @@ function HomePage() {
                     sx={{ 
                       fontWeight: 700,
                       color: 'secondary.main',
-                      mb: 1,
+                      mb: 0.5,
+                      fontSize: { 
+                        xs: '1.5rem',
+                        sm: '2rem',
+                        md: '2.5rem' 
+                      },
                       textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
                     }}
                   >
@@ -214,7 +267,12 @@ function HomePage() {
                     sx={{ 
                       fontWeight: 500,
                       color: 'white',
-                      opacity: 0.9
+                      opacity: 0.9,
+                      fontSize: { 
+                        xs: '0.8rem',
+                        sm: '0.9rem',
+                        md: '1rem' 
+                      }
                     }}
                   >
                     {stat.label}
@@ -224,46 +282,136 @@ function HomePage() {
             </Box>
           </MotionBox>
 
-          {/* Right side - Image Grid - Now hidden on xs and sm breakpoints */}
+          {/* Right side - Image Grid */}
           <MotionBox
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             sx={{
               display: { xs: 'none', md: 'grid' },
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: 2,
-              position: 'relative'
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateRows: 'repeat(3, 1fr)',
+              gap: { md: 2, lg: 3 },
+              position: 'relative',
+              height: '100%',
+              maxHeight: '500px',
+              padding: 2
             }}
           >
             {[
-              '/images/morocco-3.jpg',
-              '/images/morocco-8.avif',
-              '/images/morocco-2.jpg',              
-              '/images/morocco-1.jpg'
+              {
+                src: '/images/morocco-7.avif',
+                gridArea: '1 / 1 / 3 / 2',
+                delay: 0.1
+              },
+              {
+                src: '/images/morocco-3.jpg',
+                gridArea: '1 / 2 / 2 / 4',
+                delay: 0.2
+              },
+              {
+                src: '/images/morocco-2.jpg',
+                gridArea: '2 / 2 / 3 / 3',
+                delay: 0.3
+              },
+              {
+                src: '/images/morocco-4.jpg',
+                gridArea: '2 / 3 / 3 / 4',
+                delay: 0.4
+              },
+              {
+                src: '/images/morocco-8.avif',
+                gridArea: '3 / 1 / 4 / 3',
+                delay: 0.5
+              },
+              {
+                src: '/images/morocco-1.jpg',
+                gridArea: '3 / 3 / 4 / 4',
+                delay: 0.6
+              }
             ].map((image, index) => (
               <MotionBox
-                key={image}
+                key={image.src}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ 
+                  delay: image.delay,
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  zIndex: 2,
+                  transition: { duration: 0.2 }
+                }}
                 sx={{
-                  borderRadius: 3,
+                  position: 'relative',
+                  gridArea: image.gridArea,
+                  borderRadius: { md: '16px', lg: '20px' },
                   overflow: 'hidden',
-                  height: '160px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  transform: index % 2 ? 'translateY(20px)' : 'translateY(0)'
+                  boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                  cursor: 'pointer',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%)',
+                    zIndex: 1,
+                    transition: 'opacity 0.3s ease',
+                    opacity: 0
+                  },
+                  '&:hover::before': {
+                    opacity: 1
+                  },
+                  '&:hover img': {
+                    transform: 'scale(1.1)',
+                  }
                 }}
               >
-                <img
-                  src={image}
+                <Box
+                  component="img"
+                  src={image.src}
                   alt={`Morocco ${index + 1}`}
-                  style={{
+                  sx={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover'
+                    objectFit: 'cover',
+                    transition: 'transform 0.5s ease',
+                    transform: 'scale(1.01)',
+                    filter: 'brightness(1.1)',
                   }}
                 />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+                    color: 'white',
+                    padding: '20px',
+                    transform: 'translateY(100%)',
+                    transition: 'transform 0.3s ease',
+                    zIndex: 2,
+                    '.parent:hover &': {
+                      transform: 'translateY(0)',
+                    }
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontSize: { md: '0.8rem', lg: '0.9rem' },
+                      opacity: 0.9,
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                    }}
+                  >
+                    Discover More
+                  </Typography>
+                </Box>
               </MotionBox>
             ))}
           </MotionBox>
@@ -279,6 +427,7 @@ function HomePage() {
             bottom: 0,
             opacity: 0.1,
             background: 'url(/images/pattern.avif) repeat',
+            backgroundSize: { xs: '200px', md: '300px' },
             zIndex: 1
           }}
         />
@@ -288,17 +437,19 @@ function HomePage() {
       <Container 
         maxWidth="lg" 
         sx={{ 
-          py: { xs: 4, md: 8 },
+          py: { xs: 3, sm: 4, md: 6, lg: 8 },
+          px: { xs: 2, sm: 3, md: 4 },
           flex: 1
         }}
       >
-        <Grid container spacing={{ xs: 2, md: 3 }}>
+        <Grid container spacing={{ xs: 2, sm: 2.5, md: 3, lg: 4 }}>
           {sections.map((section, index) => (
             <Grid item xs={12} sm={6} md={4} key={section.title}>
               <MotionBox
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
+                sx={{ height: '100%' }}
               >
                 <Card
                   component={Link}
@@ -309,7 +460,7 @@ function HomePage() {
                     flexDirection: 'column',
                     textDecoration: 'none',
                     transition: 'all 0.3s ease',
-                    borderRadius: 4,
+                    borderRadius: { xs: 2, sm: 3, md: 4 },
                     overflow: 'hidden',
                     background: 'rgba(255,255,255,0.9)',
                     backdropFilter: 'blur(10px)',
@@ -330,15 +481,15 @@ function HomePage() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     textAlign: 'center',
-                    p: 4
+                    p: { xs: 2, sm: 3, md: 4 }
                   }}>
                     <Box 
                       className="icon"
                       sx={{ 
                         color: 'primary.main',
-                        mb: 3,
+                        mb: { xs: 2, md: 3 },
                         transition: 'all 0.3s ease',
-                        p: 2,
+                        p: { xs: 1.5, md: 2 },
                         borderRadius: '50%',
                         backgroundColor: 'rgba(0,91,92,0.1)'
                       }}
@@ -352,7 +503,8 @@ function HomePage() {
                       color="primary.main"
                       sx={{ 
                         fontWeight: 600,
-                        mb: 2
+                        mb: { xs: 1, md: 2 },
+                        fontSize: { xs: '1.25rem', md: '1.5rem' }
                       }}
                     >
                       {section.title}
@@ -360,7 +512,10 @@ function HomePage() {
                     <Typography 
                       variant="body1" 
                       color="text.secondary"
-                      sx={{ lineHeight: 1.6 }}
+                      sx={{ 
+                        lineHeight: 1.6,
+                        fontSize: { xs: '0.9rem', md: '1rem' }
+                      }}
                     >
                       {section.description}
                     </Typography>
