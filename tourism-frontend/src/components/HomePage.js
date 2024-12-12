@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-  Container, 
-  Grid, 
-  Card, 
-  CardContent, 
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
   Typography,
   Box,
   useTheme,
@@ -77,8 +77,8 @@ function HomePage() {
   ];
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
         minHeight: '100vh',
         display: 'flex',
@@ -90,22 +90,22 @@ function HomePage() {
       <Box
         sx={{
           position: 'relative',
-          height: { 
+          height: {
             xs: '60vh',
-            sm: '55vh', 
+            sm: '55vh',
             md: '65vh',
-            lg: '70vh' 
+            lg: '70vh'
           },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
           background: 'linear-gradient(45deg, #005B5C 30%, #337C7D 90%)',
-          borderRadius: { 
-            xs: '0 0 15px 15px', 
-            sm: '0 0 25px 25px', 
+          borderRadius: {
+            xs: '0 0 15px 15px',
+            sm: '0 0 25px 25px',
             md: '0 0 35px 35px',
-            lg: '0 0 50px 50px' 
+            lg: '0 0 50px 50px'
           },
           boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
         }}
@@ -118,22 +118,22 @@ function HomePage() {
             right: 0,
             bottom: 0,
             display: 'grid',
-            gridTemplateColumns: { 
+            gridTemplateColumns: {
               xs: '1fr',
               sm: '1fr',
-              md: '1fr 1fr' 
+              md: '1fr 1fr'
             },
-            gap: { 
-              xs: 2, 
+            gap: {
+              xs: 2,
               sm: 3,
               md: 4,
-              lg: 6 
+              lg: 6
             },
-            p: { 
-              xs: 2, 
-              sm: 3, 
+            p: {
+              xs: 2,
+              sm: 3,
               md: 4,
-              lg: 6 
+              lg: 6
             },
             zIndex: 2
           }}
@@ -154,14 +154,14 @@ function HomePage() {
               maxWidth: { lg: '800px' }
             }}
           >
-            <Typography 
-              variant="h1" 
-              sx={{ 
-                fontSize: { 
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: {
                   xs: '1.8rem',
                   sm: '2.5rem',
                   md: '3rem',
-                  lg: '3.5rem' 
+                  lg: '3.5rem'
                 },
                 fontWeight: 800,
                 mb: { xs: 1, sm: 1.5, md: 2 },
@@ -171,19 +171,19 @@ function HomePage() {
             >
               Discover Morocco
             </Typography>
-            <Typography 
+            <Typography
               variant="h5"
-              sx={{ 
+              sx={{
                 mb: { xs: 2, sm: 2.5, md: 3 },
                 maxWidth: { xs: '100%', sm: '500px', md: '600px' },
                 mx: { xs: 'auto', md: 0 },
                 lineHeight: { xs: 1.4, md: 1.6 },
                 textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
-                fontSize: { 
+                fontSize: {
                   xs: '0.9rem',
                   sm: '1.1rem',
                   md: '1.3rem',
-                  lg: '1.5rem' 
+                  lg: '1.5rem'
                 }
               }}
             >
@@ -191,19 +191,19 @@ function HomePage() {
             </Typography>
 
             {/* Statistics Section */}
-            <Box 
-              sx={{ 
+            <Box
+              sx={{
                 display: 'grid',
-                gridTemplateColumns: { 
+                gridTemplateColumns: {
                   xs: 'repeat(2, 1fr)',
                   sm: 'repeat(2, 1fr)',
-                  md: 'repeat(4, 1fr)' 
+                  md: 'repeat(4, 1fr)'
                 },
-                gap: { 
+                gap: {
                   xs: 1,
                   sm: 1.5,
                   md: 2,
-                  lg: 3 
+                  lg: 3
                 },
                 mt: { xs: 2, sm: 3, md: 4 },
                 width: '100%',
@@ -216,12 +216,12 @@ function HomePage() {
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
+                  transition={{
                     delay: index * 0.2,
                     duration: 0.5,
                     ease: "easeOut"
                   }}
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.05,
                     transition: { duration: 0.2 }
                   }}
@@ -241,16 +241,16 @@ function HomePage() {
                     }
                   }}
                 >
-                  <Typography 
-                    variant="h3" 
-                    sx={{ 
+                  <Typography
+                    variant="h3"
+                    sx={{
                       fontWeight: 700,
                       color: 'secondary.main',
                       mb: 0.5,
-                      fontSize: { 
+                      fontSize: {
                         xs: '1.5rem',
                         sm: '2rem',
-                        md: '2.5rem' 
+                        md: '2.5rem'
                       },
                       textShadow: '2px 2px 4px rgba(0,0,0,0.2)'
                     }}
@@ -262,16 +262,16 @@ function HomePage() {
                       suffix={stat.suffix}
                     />
                   </Typography>
-                  <Typography 
+                  <Typography
                     variant="body1"
-                    sx={{ 
+                    sx={{
                       fontWeight: 500,
                       color: 'white',
                       opacity: 0.9,
-                      fontSize: { 
+                      fontSize: {
                         xs: '0.8rem',
                         sm: '0.9rem',
-                        md: '1rem' 
+                        md: '1rem'
                       }
                     }}
                   >
@@ -305,41 +305,36 @@ function HomePage() {
                 delay: 0.1
               },
               {
-                src: '/images/morocco-3.jpg',
-                gridArea: '1 / 2 / 2 / 4',
+                src: '/images/morocco-8.avif',
+                gridArea: '2 / 2 / 4 / 4',
                 delay: 0.2
               },
               {
                 src: '/images/morocco-2.jpg',
-                gridArea: '2 / 2 / 3 / 3',
+                gridArea: '3 / 1 / 4 / 2',
                 delay: 0.3
               },
               {
-                src: '/images/morocco-4.jpg',
-                gridArea: '2 / 3 / 3 / 4',
+                src: '/images/morocco-1.jpg',
+                gridArea: '1 / 2 / 2 / 3',
                 delay: 0.4
               },
               {
-                src: '/images/morocco-8.avif',
-                gridArea: '3 / 1 / 4 / 3',
+                src: '/images/morocco-4.jpg',
+                gridArea: '1 / 3 / 2 / 4',
                 delay: 0.5
-              },
-              {
-                src: '/images/morocco-1.jpg',
-                gridArea: '3 / 3 / 4 / 4',
-                delay: 0.6
               }
             ].map((image, index) => (
               <MotionBox
                 key={image.src}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
+                transition={{
                   delay: image.delay,
                   duration: 0.6,
                   ease: "easeOut"
                 }}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.05,
                   zIndex: 2,
                   transition: { duration: 0.2 }
@@ -415,6 +410,7 @@ function HomePage() {
               </MotionBox>
             ))}
           </MotionBox>
+
         </Box>
 
         {/* Decorative background elements */}
@@ -434,9 +430,9 @@ function HomePage() {
       </Box>
 
       {/* Categories Section */}
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
+      <Container
+        maxWidth="lg"
+        sx={{
           py: { xs: 3, sm: 4, md: 6, lg: 8 },
           px: { xs: 2, sm: 3, md: 4 },
           flex: 1
@@ -475,17 +471,17 @@ function HomePage() {
                     }
                   }}
                 >
-                  <CardContent sx={{ 
-                    flexGrow: 1, 
+                  <CardContent sx={{
+                    flexGrow: 1,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     textAlign: 'center',
                     p: { xs: 2, sm: 3, md: 4 }
                   }}>
-                    <Box 
+                    <Box
                       className="icon"
-                      sx={{ 
+                      sx={{
                         color: 'primary.main',
                         mb: { xs: 2, md: 3 },
                         transition: 'all 0.3s ease',
@@ -496,12 +492,12 @@ function HomePage() {
                     >
                       {section.icon}
                     </Box>
-                    <Typography 
-                      gutterBottom 
-                      variant="h5" 
-                      component="h2" 
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
                       color="primary.main"
-                      sx={{ 
+                      sx={{
                         fontWeight: 600,
                         mb: { xs: 1, md: 2 },
                         fontSize: { xs: '1.25rem', md: '1.5rem' }
@@ -509,10 +505,10 @@ function HomePage() {
                     >
                       {section.title}
                     </Typography>
-                    <Typography 
-                      variant="body1" 
+                    <Typography
+                      variant="body1"
                       color="text.secondary"
-                      sx={{ 
+                      sx={{
                         lineHeight: 1.6,
                         fontSize: { xs: '0.9rem', md: '1rem' }
                       }}
